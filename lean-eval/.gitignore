@@ -1,0 +1,17 @@
+# Reproduction outputs and local agent state
+.runtime/
+codex-home/
+logs/
+pids/
+.codex/*
+!.codex/hooks.json
+
+# Nested workspace outputs
+**/.humanize/
+**/.humanize-setup.log
+**/.lake/
+**/lake-manifest.json
+
+# Common local noise
+.DS_Store
+*.log

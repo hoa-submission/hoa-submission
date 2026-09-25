@@ -1,6 +1,6 @@
 # Olympiad and Benchmark Results (Anonymous Submission)
 
-This repository collects the released artifacts for five agentic
+This repository collects the released artifacts for six agentic
 problem-solving efforts. All author, affiliation, and infrastructure
 identifiers have been removed for anonymous review.
 
@@ -11,10 +11,14 @@ identifiers have been removed for anonymous review.
 | IChO 2026 | [`icho2026/`](./icho2026) | 68/68 theory formalization targets |
 | IOI 2026 | [`ioi2026/`](./ioi2026) | 6/6 problems, Codeforces graded |
 | PutnamBench | [`putnambench/`](./putnambench) | 672/672 (100%), formally verified |
+| Lean-Eval | [`lean-eval/`](./lean-eval) | 8 research-level workspaces, reproduction source |
 
 Each subdirectory keeps the structure of its original release: problem
 inputs, model solutions, verification artifacts, and the orchestration
-scripts used to produce them.
+scripts used to produce them. `lean-eval/` is the exception: it is a
+reproduction source rather than an archive, holding clean benchmark
+workspaces, proof plans, the bundled agent-loop runtime, and launch
+scripts, but no completed proof terms or run output.
 
 ## Anonymization
 

@@ -1,0 +1,4 @@
+.humanize/
+.humanize-setup.log
+.lake/
+lake-manifest.json
