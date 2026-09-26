@@ -1,10 +1,9 @@
 Package created: 2026-07-14 UTC
-Historical run: failed-humanize-jsonl98-20260709T003743Z
+Historical run: failed-jsonl98-20260709T003743Z
 Historical result: 96/98 independently verified
 
-Humanize source snapshot:
-  original local path: /home/user/workspace/lean/humanize-axle-comparator-review
-  upstream: https://github.com/anonymous/humanize
+Orchestration source snapshot:
+  original local path: /home/user/workspace/lean/axle-comparator-review
   reported version: 1.16.0
 
 Experiment inputs:
@@ -30,6 +29,6 @@ Historical model settings:
   worker timeout: 7200 seconds
   reviewer timeout: 7200 seconds
 
-The customized Humanize directory did not contain Git metadata. Its complete
-source snapshot is therefore vendored and protected by MANIFEST.sha256 rather
-than represented by a local commit hash.
+The customized orchestration directory did not contain Git metadata, so it is
+not represented by a local commit hash. That source is not included in this
+package.

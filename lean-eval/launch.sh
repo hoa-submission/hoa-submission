@@ -4,17 +4,17 @@ set -Eeuo pipefail
 RUN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$RUN_ROOT/workspaces"
 RUN_CODEX_DIR="${RUN_CODEX_DIR:-$RUN_ROOT/.runtime/codex-home}"
-HUMANIZE_ROOT="${HUMANIZE_ROOT:-$RUN_ROOT/humanize}"
+HARNESS_ROOT="${HARNESS_ROOT:-$RUN_ROOT/review-harness}"
 MODEL="${MODEL:-gpt-5.6-sol}"
 EFFORT="${EFFORT:-max}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-21600}"
 
-[[ -x "$HUMANIZE_ROOT/scripts/setup-rlcr-loop.sh" ]] || {
-  printf 'missing Humanize setup script under %s\n' "$HUMANIZE_ROOT" >&2
+[[ -x "$HARNESS_ROOT/scripts/setup-review-loop.sh" ]] || {
+  printf 'missing review-loop setup script under %s\n' "$HARNESS_ROOT" >&2
   exit 1
 }
-[[ -x "$HUMANIZE_ROOT/hooks/loop-codex-stop-hook.sh" ]] || {
-  printf 'missing Humanize Stop hook under %s\n' "$HUMANIZE_ROOT" >&2
+[[ -x "$HARNESS_ROOT/hooks/loop-codex-stop-hook.sh" ]] || {
+  printf 'missing review-loop Stop hook under %s\n' "$HARNESS_ROOT" >&2
   exit 1
 }
 command -v codex >/dev/null || { printf 'missing command: codex\n' >&2; exit 1; }
@@ -33,7 +33,7 @@ problems=(
   wigner_semicircle
 )
 
-worker_prompt='Act as the proof implementer for this Humanize RLCR loop. Read the active .humanize/rlcr/*/round-*-prompt.md and HUMANIZE_PLAN.md, then carry the loop through implementation, independent review, fixes, comparator validation, and finalization. Begin from the current clean Submission files. You and the Humanize reviewer have live internet access; use web research for Mathlib documentation, mathematical references, and API verification when useful. Do not inspect or copy accepted target proofs, Seed Prover outputs, or earlier local solutions. Use Lean 4.32.2, edit only participant-owned files, commit each completed round, write every requested Humanize summary, and obey every Stop-hook response until the hook allows completion.'
+worker_prompt='Act as the proof implementer for this review loop. Read the active .loop/*/round-*-prompt.md and PLAN.md, then carry the loop through implementation, independent review, fixes, comparator validation, and finalization. Begin from the current clean Submission files. You and the reviewer have live internet access; use web research for Mathlib documentation, mathematical references, and API verification when useful. Do not inspect or copy accepted target proofs, Seed Prover outputs, or earlier local solutions. Use Lean 4.32.2, edit only participant-owned files, commit each completed round, write every requested round summary, and obey every Stop-hook response until the hook allows completion.'
 
 for problem in "${problems[@]}"; do
   workspace="$WORKSPACE_ROOT/$problem"
@@ -48,20 +48,20 @@ for problem in "${problems[@]}"; do
 
   if [[ ! -d "$workspace/.git" ]]; then
     git init -q -b main "$workspace"
-    git -C "$workspace" config user.name "Humanize Seed-Gap Worker"
-    git -C "$workspace" config user.email "humanize-seed-gap@example.invalid"
+    git -C "$workspace" config user.name "Seed-Gap Worker"
+    git -C "$workspace" config user.email "seed-gap@example.invalid"
     git -C "$workspace" add .
     git -C "$workspace" commit -q -m "chore: clean lean-eval vanilla start"
   fi
 
-  if [[ ! -d "$workspace/.humanize/rlcr" ]]; then
+  if [[ ! -d "$workspace/.loop" ]]; then
     (
       cd "$workspace"
       CODEX_HOME="$RUN_CODEX_DIR" \
       DEFAULT_CODEX_MODEL="$MODEL" \
       DEFAULT_CODEX_EFFORT="$EFFORT" \
-      bash "$HUMANIZE_ROOT/scripts/setup-rlcr-loop.sh" \
-        HUMANIZE_PLAN.md \
+      bash "$HARNESS_ROOT/scripts/setup-review-loop.sh" \
+        PLAN.md \
         --track-plan-file \
         --base-branch main \
         --max 42 \
@@ -69,7 +69,7 @@ for problem in "${problems[@]}"; do
         --codex-timeout "$TIMEOUT_SECONDS" \
         --yolo \
         --privacy \
-        > .humanize-setup.log 2>&1
+        > .loop-setup.log 2>&1
     )
   fi
 
@@ -81,7 +81,7 @@ for problem in "${problems[@]}"; do
   worker_command=(
     env
     "CODEX_HOME=$RUN_CODEX_DIR"
-    "HUMANIZE_ROOT=$HUMANIZE_ROOT"
+    "HARNESS_ROOT=$HARNESS_ROOT"
     codex exec
     --cd "$workspace"
     --model "$MODEL"

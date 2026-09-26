@@ -140,12 +140,12 @@ claim.
       UndefinedBehaviorSanitizer.
     - The recorded SHA-256 of `problem/statement-en.pdf` remains
       `8d1b2a122d382656b6e07777fb30c93ea69ae29c12042561cbc787abe026d10c`.
-    - Git ignores `.humanize/` and generated/build files; final tracked content
+    - Git ignores `.loop/` and generated/build files; final tracked content
       contains no hidden data, official grader, downloaded attachment, runtime
       state, binary, cache, or generated output park.
   - Negative Tests (expected to FAIL):
     - Statement hash drift, compiler warnings, a dirty post-test tree, or a
-      tracked Humanize/runtime artifact prevents completion.
+      tracked harness/runtime artifact prevents completion.
 
 ## Path Boundaries
 
@@ -163,8 +163,8 @@ claim.
 - `docs/solution.md` (or README-equivalent): exact construction, proof,
   complexity, API/output mapping, and blind-validation limitations.
 - Root `test.sh`, `.gitignore`, and a statement checksum record.
-- Native untracked `.humanize/rlcr/<run>/complete-state.md` evidence produced by
-  the required Humanize Stop-hook workflow.
+- Native untracked `.loop/<run>/complete-state.md` evidence produced by
+  the required Stop-hook workflow.
 
 ### Lower Bound (Minimum Scope)
 
@@ -174,7 +174,7 @@ claim.
 - A genuinely independent exhaustive semantic checker and deterministic
   exporter.
 - A root `./test.sh` that validates all legal K plus meaningful corruptions.
-- Successful native Humanize finalize and a clean Git worktree.
+- Successful native harness finalize and a clean Git worktree.
 
 ### Allowed Choices
 
@@ -192,9 +192,9 @@ claim.
   libraries, nonstandard C++ extensions, or precomputed data not fully stated
   and proved in this repository.
 - Cannot modify `plan.md` after its initial tracked commit or manually edit,
-  bypass, cancel, or forge Humanize state.
+  bypass, cancel, or forge harness state.
 - Cannot enable agent teams, spawn problem-solving subagents, push a remote, or
-  package `.humanize` state with the submission.
+  package `.loop` state with the submission.
 
 ## Construction Specification
 
@@ -261,7 +261,7 @@ target table. Since every vertex has degree K, the handshake lemma gives
 1. Milestone 1: Freeze specification and blind provenance.
    - Record statement SHA-256 and repository isolation rules.
    - Commit the statement, AGENTS.md, and this immutable plan on `main` before
-     setting up Humanize with tracked-plan enforcement.
+     setting up the harness with tracked-plan enforcement.
 
 2. Milestone 2: Implement production construction.
    - Encode and internally assert the five small tables and the four cyclic
@@ -287,7 +287,7 @@ target table. Since every vertex has degree K, the handshake lemma gives
    - Write a line-by-line construction proof and API/output usage guide.
    - Audit statement integrity, strict compilation, all-K validation, file
      permissions, ignores, and Git hygiene.
-   - Complete every Humanize implementation/review/finalize gate genuinely,
+   - Complete every implementation/review/finalize gate genuinely,
      retain untracked completion evidence, rerun `./test.sh`, and finish with a
      clean Git status.
 
@@ -309,6 +309,6 @@ target table. Since every vertex has degree K, the handshake lemma gives
   basic statement validity. Score-target and structural audits are separate.
 - Generated output files are reproducible artifacts, not source deliverables;
   generate them only into a caller-selected or temporary directory.
-- Humanize nested reviews must run with web/network disabled and must be
+- Nested reviews must run with web/network disabled and must be
   instructed to read only this repository. No review result can be treated as
   access to official grading data.

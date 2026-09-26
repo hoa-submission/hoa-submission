@@ -1,10 +1,10 @@
-# Six-worker Humanize reproduction
+# Six-worker review-loop reproduction
 
 This launcher reconstructs the process that produced the six IOI 2026
 artifacts. It creates six independent Git repositories from the bundled
-official problems, copies the corresponding immutable Humanize plans, and
+official problems, copies the corresponding immutable plans, and
 starts six concurrent Codex workers. Every worker runs its own native-hook
-Humanize RLCR implementation/review loop.
+implementation/review loop.
 
 The worker seeds do **not** contain `../submissions/`. On Linux, the default
 Landlock boundary also prevents a worker and its nested reviewers from reading
@@ -15,7 +15,7 @@ the bundle, sibling workers, or other workspace repositories.
 - Linux with Landlock support (or explicitly use `--no-isolation`)
 - authenticated Codex CLI with native hooks support
 - Bash, Python 3, Git, jq, a C compiler, and the task toolchain
-- the Humanize skill installed locally
+- the review-loop harness skill installed locally
 
 Six `gpt-5.6-sol:max` runs can consume substantial quota. Nothing starts unless
 `--start` is supplied.
@@ -46,7 +46,7 @@ Every command accepts an explicit run directory where applicable. The launcher
 prints the created directory and updates `runs/latest` to point to it.
 
 Configuration can be overridden with `--model`, `--effort`, `--max`, and
-`--codex-timeout`. `HUMANIZE_ROOT_OVERRIDE` and `CODEX_AUTH_FILE_OVERRIDE`
+`--codex-timeout`. `HARNESS_ROOT_OVERRIDE` and `CODEX_AUTH_FILE_OVERRIDE`
 select non-default installations without copying credentials into this bundle.
 
 ## Output layout
@@ -65,5 +65,5 @@ runs/<run-id>/
 └── results/                 # created by collect-results.sh
 ```
 
-Each worker retains its commits, `.humanize/` review ledger, JSONL Codex event
+Each worker retains its commits, `.loop/` review ledger, JSONL Codex event
 stream, final message, validation log, and status JSON.

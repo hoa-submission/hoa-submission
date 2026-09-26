@@ -6,8 +6,7 @@ problems**, achieving a **100% pass rate** and a **joint #1 result** on the
 Every submitted solution passed Lean 4, Comparator, and AXLE verification.
 
 
-The result was produced with [Humanize](https://anonymous.example/) using a fully
-agentic, YOLO-style approach.
+The result was produced using a fully agentic, YOLO-style approach.
 
 | Metric | Value |
 | --- | --- |
@@ -62,7 +61,7 @@ for line in pathlib.Path("inputs/putnam_bench.jsonl").read_text(encoding="utf-8"
 PY
 
 # 3. Verify a single proof.
-python3 humanize/scripts/verify-putnambench-axle.py \
+python3 orchestration/scripts/verify-putnambench-axle.py \
   --originals-root work/originals \
   --candidate putnam-bench-verified-and-code/Putnam-bench-verified/Putnam1962A2.lean
 
@@ -71,7 +70,7 @@ find putnam-bench-verified-and-code/Putnam-bench-verified -name '*.lean' -print0
   | xargs -0 -n 50 sh -c '
       args=""
       for file in "$@"; do args="$args --candidate $file"; done
-      python3 humanize/scripts/verify-putnambench-axle.py \
+      python3 orchestration/scripts/verify-putnambench-axle.py \
         --originals-root work/originals $args \
         --output "work/axle-$(date -u +%s%N).json"
     ' sh
@@ -174,7 +173,7 @@ python3 inputs/math-flow-bench/scripts/validate-putnambench-output.py \
 lake env lean MathFlowBench/<Module>.lean
 
 # Gate 4: Comparator, restricted axioms, Lean kernel replay.
-bash humanize/scripts/check-putnambench-comparator.sh comparator.json
+bash orchestration/scripts/check-putnambench-comparator.sh comparator.json
 ```
 
 Gate 1 must print nothing, and gate 4 must end with both `Lean default kernel
@@ -184,7 +183,7 @@ candidate at `MathFlowBench/<Module>.lean` inside a copy of
 `work/math-flow-bench/.lake/packages`, with the benchmark statement at
 `source/lean4/src/putnam_YYYY_aN.lean` (the same file `work/originals` already
 holds) and a matching `comparator.json`. `prepare_workspace` in
-`humanize/scripts/run-failed-putnambench.sh` is the exact layout the solver used
+`orchestration/scripts/run-failed-putnambench.sh` is the exact layout the solver used
 and generates that `comparator.json`.
 
 To re-verify proofs that this repository produced itself, run the batch auditor
@@ -222,7 +221,7 @@ Each candidate must clear all of the following gates:
    `https://axle.axiommath.ai/api/v1/verify_proof` and must receive Boolean
    `okay: true` against the JSONL-sourced statement. The reviewer's only
    permitted network call is this one.
-7. **Independent post-hoc audit.** `humanize/scripts/audit-failed-putnambench-passes.sh`
+7. **Independent post-hoc audit.** `orchestration/scripts/audit-failed-putnambench-passes.sh`
    re-audits every terminal pass after the fact: it re-checks candidate and
    original hashes against the stored AXLE artifact, re-runs the statement
    validator and forbidden-marker scan, and recompiles the candidate from a
@@ -354,7 +353,7 @@ reviews, AXLE evidence, and Codex session index. Verified proof files are at
 WORKSPACE_ROOT="$PWD/work" \
 OUT_ROOT="$PWD/all-runs" \
 CANONICAL_ROOT="$PWD/work/math-flow-bench" \
-  bash humanize/scripts/audit-failed-putnambench-passes.sh
+  bash orchestration/scripts/audit-failed-putnambench-passes.sh
 ```
 
 This recompiles each passed candidate from the canonical built environment,
@@ -372,7 +371,7 @@ methodologically faithful when it uses:
 - the full 672-problem selection derived from the packaged JSONL;
 - the byte-identical `formal_statement` values;
 - the pinned Lean, Mathlib, Comparator, Lean4Export, and Landrun commits;
-- the vendored Humanize orchestration in `humanize/`;
+- the orchestration harness described below;
 - `gpt-5.5` at `xhigh` reasoning;
 - the unmodified acceptance gates above.
 
@@ -390,8 +389,6 @@ backed by kernel-checked, statement-preserving, independently audited proofs.
 - Comparator: `leanprover/comparator@099775bf2e6073fcb22aacd3a2809fdeac3fc84a`
 - Lean4Export: `leanprover/lean4export@590dec59d93ab6becdf16fdd8aee5abbb99cb856`
 - Landrun: `Zouuup/landrun@5ed4a3db3a4ad930d577215c6b9abaa19df7f99f`
-- Humanize upstream: `anonymous/humanize`; this package vendors the exact
-  comparator-enabled source snapshot used by the runner.
 
 `MANIFEST.sha256` covers the immutable packaged source, inputs, and reference
 evidence. Generated dependencies and new runs are written only under `work/`,
@@ -403,10 +400,11 @@ evidence. Generated dependencies and new runs are written only under `work/`,
   over unresolved problems, aggregate controller state.
 - `reproduce.sh` — integrity check, pinned dependency bootstrap, workspace
   preparation.
-- `humanize/` — the exact comparator-enabled Humanize source snapshot: worker and
-  reviewer orchestration, gates, the AXLE verifier client
-  (`scripts/verify-putnambench-axle.py`), and the independent pass auditor
-  (`scripts/audit-failed-putnambench-passes.sh`).
+- `orchestration/` — the comparator-enabled worker and reviewer orchestration,
+  gates, the AXLE verifier client (`scripts/verify-putnambench-axle.py`), and the
+  independent pass auditor (`scripts/audit-failed-putnambench-passes.sh`). This
+  source is not included in this package; set `ORCHESTRATION_ROOT` to a checkout
+  that provides it.
 - `inputs/` — the pinned JSONL statements, the pinned Lean project template, and
   the earlier problem-subset list.
 - `reference/` — retained evidence from an earlier subset run, kept for

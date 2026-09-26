@@ -1,4 +1,4 @@
-.humanize/
-.humanize-setup.log
+.loop/
+.loop-setup.log
 .lake/
 lake-manifest.json

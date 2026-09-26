@@ -12,10 +12,10 @@ with a prefilled participant proof.
 - Parallel workers: 8
 - Worker network: enabled, with live web search
 - Reviewer network: enabled, with live web search
-- Humanize maximum iterations: 42 per problem
+- Maximum review iterations: 42 per problem
 - Worker/reviewer timeout: 21600 seconds
 
-Humanize and RLCR provided the implementation-and-review loop, but they were
+The review loop provided implementation and review, but it was
 only one part of the proof-development process. The mathematical outline,
 translation into the exact Lean statement, Mathlib research, intermediate lemma
 design, elaboration fixes, and benchmark validation were all separate and
@@ -36,7 +36,7 @@ weakening its assumptions, adding axioms, or modifying the comparator setup.
 
 ### 2. Ask a model for a natural-language formalization first
 
-Before writing `HUMANIZE_PLAN.md` or starting Humanize, we asked a model to
+Before writing `PLAN.md` or starting the loop, we asked a model to
 formalize the mathematical argument as a natural-language proof. This first
 pass turned the theorem description and cited source into an explicit proof
 strategy: the main reduction, the intermediate lemmas, and the facts that a
@@ -48,7 +48,7 @@ scaffolding rather than trusted evidence: the later Lean development still had
 to check whether every step was expressible using the exact definitions in the
 challenge and the APIs available in the pinned Mathlib version.
 
-Doing this before Humanize separated two questions that are easy to conflate:
+Doing this before the loop separated two questions that are easy to conflate:
 
 1. Why is the theorem mathematically true?
 2. How can that argument be represented with the definitions and lemmas
@@ -70,7 +70,7 @@ incremental builds are used to confirm APIs before committing to a large proof.
 ### 4. Write an executable proof plan
 
 Only after the natural-language and library-reconnaissance passes did we write
-each `HUMANIZE_PLAN.md`. The plan converts the proof task into auditable
+each `PLAN.md`. The plan converts the proof task into auditable
 acceptance criteria:
 
 - no `sorry`, `admit`, or new `axiom` in participant-owned files;
@@ -98,18 +98,18 @@ For these targets, this implementation work—not merely invoking an agent
 loop—is where the informal mathematics was converted into kernel-checkable Lean
 terms.
 
-### 6. Use Humanize RLCR for independent review and correction
+### 6. Use an iterative loop for independent review and correction
 
-Humanize ran the worker and an independent Codex reviewer in an RLCR
-(Ralph-Loop with Codex Review) cycle. At the end of a round, the worker committed
+The harness ran the worker and an independent Codex reviewer in an iterative
+implement-and-review cycle. At the end of a round, the worker committed
 its changes and wrote a structured summary. The reviewer checked the work
 against the immutable goal and acceptance criteria. Review findings were fed
 back into the next implementation round until the proof and its surrounding
 code passed review.
 
-The tracked `.codex/hooks.json` registers Humanize's native `Stop` hook. When a
+The tracked `.codex/hooks.json` registers the harness's native `Stop` hook. When a
 worker attempts to finish, the hook can reject the stop and require another
-round. After implementation review completes, Humanize also runs a code-review
+round. After implementation review completes, the harness also runs a code-review
 phase to catch correctness, maintainability, or scope problems that ordinary
 elaboration may not reveal.
 
@@ -135,12 +135,12 @@ The repository contains the reproducible *starting point* for that process:
 
 - eight clean benchmark workspaces and their original proof holes;
 - the model-assisted informal solution sketches in the workspace READMEs;
-- the Humanize plans and acceptance criteria;
-- the pinned Humanize runtime and Stop-hook configuration; and
+- the plans and acceptance criteria;
+- the Stop-hook configuration; and
 - scripts for launching and monitoring the eight independent runs.
 
 It intentionally excludes concrete run output: completed or partial proofs,
-Humanize RLCR state, Codex state, dependency/build caches, generated Lake
+loop state, Codex state, dependency/build caches, generated Lake
 manifests, logs, PIDs, and tmux session data. In other words, this is a
 reproduction source repository, not an archive of accepted proof terms or model
 transcripts.
@@ -165,24 +165,18 @@ bash launch.sh
 bash status.sh
 ```
 
-The Humanize v1.16.0 runtime is bundled under `humanize/`.
-
 `MODEL`, `EFFORT`, `TIMEOUT_SECONDS`, and `RUN_CODEX_DIR` may be overridden in
-the environment. `HUMANIZE_ROOT` may also point to another Humanize checkout;
-by default it resolves to the bundled directory. The defaults reproduce the
-original run configuration.
-
-The bundled runtime was exported from
-[`anonymous/humanize`](https://github.com/anonymous/humanize) at commit
-`0ec921a36b4365df503511c5567bbd3e02db0df5` (Humanize v1.16.0). Its upstream
-Git history and caches are not vendored.
+the environment. `HARNESS_ROOT` must point to a review-loop harness checkout
+providing `scripts/setup-review-loop.sh` and `hooks/loop-codex-stop-hook.sh`;
+by default it resolves to `review-harness/`. The harness runtime is not vendored in this
+repository. The remaining defaults reproduce the original run configuration.
 
 The Stop hook uses a 21600-second timeout. `launch.sh` passes the configured
-`HUMANIZE_ROOT` into each worker so the hook remains portable.
+`HARNESS_ROOT` into each worker so the hook remains portable.
 
 ## Repository scope
 
 Each directory under `workspaces/` is reconstructed from its original baseline
 commit, before a worker ran. The source includes benchmark statements, empty
 participant submissions, pinned Mathlib revisions, comparator wrappers, and the
-Humanize plans needed to reproduce the experiment.
+plans needed to reproduce the experiment.

@@ -59,7 +59,7 @@ Only the supplied English statement, supplied contestant attachment, public samp
 - AC-6: Quality, isolation, and delivery
   - Positive Tests (expected to PASS):
     - The implementation is bounded for `N,M <= 100`, has documented time and memory complexity, and uses no network, filesystem, environment, clock, or nondeterministic dependencies.
-    - Repository history contains the plan, implementation, documentation, checker, test script, and Humanize RLCR evidence, with a clean final worktree.
+    - Repository history contains the plan, implementation, documentation, checker, test script, and review evidence, with a clean final worktree.
   - Negative Tests (expected to FAIL):
     - Review rejects copied solution material, access to grading examples/test cases, access to any external `tests` path, or dependence on files outside this isolated repository at build/test time.
 
@@ -67,7 +67,7 @@ Only the supplied English statement, supplied contestant attachment, public samp
 
 ### Upper Bound (Maximum Scope)
 
-A full-score C++20 contestant implementation, a rigorous derivation/proof, and a standalone validation system sufficient to challenge legality and safety across exhaustive feasible state spaces and large deterministic/randomized stress campaigns. Humanize review evidence and reproducible commands are included.
+A full-score C++20 contestant implementation, a rigorous derivation/proof, and a standalone validation system sufficient to challenge legality and safety across exhaustive feasible state spaces and large deterministic/randomized stress campaigns. Review evidence and reproducible commands are included.
 
 ### Lower Bound (Minimum Scope)
 
@@ -78,7 +78,7 @@ The exact solution artifact, proof-quality README, executable `test.sh`, indepen
 - Can use: standard C++20, deterministic in-memory state, the supplied contestant API/header/grader as interface references, public sample data, self-authored tests under this repository, brute force or model exploration for validating small cases, and assertions in test-only code.
 - Cannot use: web/network access, Git remotes, official or unofficial editorials/solutions, task-archive or grading tests/examples, future block knowledge, rotation, randomness as part of correctness, changes outside this repository, or any path named `tests` outside self-authored repository content.
 - The implementation may reduce a multi-white block to one selected white corner only if the proof establishes that this reduction is conservative and the tests still exercise all 15 legal colorings.
-- Keep `plan.md` immutable after RLCR initialization. Do not encode plan terminology such as `AC-`, milestones, or review-loop mechanics in production solution code.
+- Keep `plan.md` immutable after loop initialization. Do not encode plan terminology such as `AC-`, milestones, or review-loop mechanics in production solution code.
 
 ## Dependencies and Sequence
 
@@ -105,8 +105,8 @@ The exact solution artifact, proof-quality README, executable `test.sh`, indepen
 
 5. Validate and review to completion
    - Run `test.sh`, strict compiler diagnostics, sanitizers where supported, and independent review.
-   - Resolve every correctness or proof concern surfaced by Humanize; do not finalize while a material concern remains.
-   - Confirm exact artifact paths, executable permissions, repository cleanliness, and committed Humanize completion evidence.
+   - Resolve every correctness or proof concern surfaced by review; do not finalize while a material concern remains.
+   - Confirm exact artifact paths, executable permissions, repository cleanliness, and committed completion evidence.
 
 ## Implementation Notes
 

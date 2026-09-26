@@ -9,7 +9,7 @@ Raw rubric points: **340.2/437 (77.85%)**. Weighted accuracy: **79.46%** (47.674
 Status: graded. Full-credit subquestions: 49/68.
 
 This chemistry score is separate from Lean/semantic acceptance. No supplementary
-assumptions from the Humanize experiments were imported. T1-A6 remains the
+assumptions from the earlier experiments were imported. T1-A6 remains the
 blocked native goal; its frozen answer was still graded.
 
 | Subquestion | Points | Assessment |

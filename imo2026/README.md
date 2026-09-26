@@ -8,7 +8,7 @@ We build with open source, and build for open source. We **release everything** 
 * the final lean solutions [Kimi-K3](./kimi-solution) and [GPT-5.6](./gpt-5.6-solution); 
 * the [scripts](./scripts) and harness used for problem solving -- which most other partipants do not
 
-Notably, humanize enables **open source models like Kimi-K3** to achieve a **full score at IMO 2026** as well, with half of the token costs! As widely shared, We all love _open models X open harness_ 🎉 and the combination achieves full score at every competiton: 
+Notably, the harness enables **open source models like Kimi-K3** to achieve a **full score at IMO 2026** as well, with half of the token costs! As widely shared, We all love _open models X open harness_ 🎉 and the combination achieves full score at every competiton: 
 * [IMO2026](https://github.com/anonymous/imo2026) / [IOI2026](https://github.com/anonymous/ioi2026) / [IPhO2026](https://github.com/anonymous/ipho2026) / [ICho2026](https://github.com/anonymous/icho2026) / [IBO2024](https://github.com/anonymous/icho2024)
 
 
@@ -64,7 +64,8 @@ failed.
 
 ## Prerequisites
 
-- [Humanize](https://github.com/anonymous/humanize)
+- A review-loop harness providing `scripts/setup-review-loop.sh` and
+  `hooks/loop-codex-stop-hook.sh` (set `HARNESS_ROOT_OVERRIDE`)
 - [Elan](https://github.com/leanprover/elan), which provides Lean and Lake
 - Git
 - Python 3 for the validation and AXLE scripts
@@ -232,7 +233,7 @@ Landrun in the runtime template:
 
 ```bash
 install -m 0755 tools/lean4export/.lake/build/bin/lean4export \
-  /tmp/imo2026-humanize-runtime-v431/checker-tools/lean4export
+  /tmp/imo2026-runtime-v431/checker-tools/lean4export
 ```
 
 Each experiment creates its own problem-specific Comparator challenge and
@@ -311,13 +312,13 @@ The harness expects:
 - a runtime template containing Lean, Mathlib, Comparator, Landrun, and
   `lean4export`;
 - `/mathlib-packages` linked to the pinned package cache;
-- isolated users named `humanize-imo-q1` through `humanize-imo-q6`, unless
-  `HUMANIZE_USER_PREFIX` is changed.
+- isolated users named `imo-q1` through `imo-q6`, unless
+  `HARNESS_USER_PREFIX` is changed.
 
 The default runtime template layout is:
 
 ```text
-/tmp/imo2026-humanize-runtime-v431/
+/tmp/imo2026-runtime-v431/
 ├── root/.elan/bin/lake
 ├── mathlib-packages/mathlib/
 ├── checker-tools/lean4export
@@ -351,7 +352,7 @@ After provisioning the environment, run one problem first:
 ```bash
 BASE_CODEX_HOME=/path/to/codex-home \
 CODEX_BIN=/path/to/codex \
-LOCAL_RUNTIME_TEMPLATE=/tmp/imo2026-humanize-runtime-v431 \
+LOCAL_RUNTIME_TEMPLATE=/tmp/imo2026-runtime-v431 \
 bash scripts/run-imo2026.sh \
   --problem imo2026_q1 \
   --jobs 1 \
@@ -397,7 +398,7 @@ the isolated AXLE-backed review:
 BASE_KIMI_HOME=/path/to/kimi-code-home \
 BASE_CODEX_HOME=/path/to/codex-home \
 KIMI_BIN=/absolute/path/to/kimi \
-LOCAL_RUNTIME_TEMPLATE=/tmp/imo2026-humanize-runtime-v431 \
+LOCAL_RUNTIME_TEMPLATE=/tmp/imo2026-runtime-v431 \
 bash scripts/run-imo2026-kimi.sh \
   --problem imo2026_q1 \
   --jobs 1 \
@@ -441,7 +442,7 @@ a recovery mode:
 export RUN_ID=the-original-run-id
 export OUT_ROOT=/path/to/original/output-root
 export LOCAL_RUNS_ROOT=/path/to/original/local-runs-root
-export LOCAL_RUNTIME_TEMPLATE=/path/to/imo2026-humanize-runtime-v431
+export LOCAL_RUNTIME_TEMPLATE=/path/to/imo2026-runtime-v431
 
 find "$OUT_ROOT/$RUN_ID/jobs" -name status.txt -print -exec cat {} \;
 ```

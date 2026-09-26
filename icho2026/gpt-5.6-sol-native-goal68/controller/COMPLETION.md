@@ -14,7 +14,7 @@ that all submitted formalizations were accepted.
   Ordinary scientific web access was allowed. Keyword screening of 107 native
   web-search records found no flagged answer-source terms; this is not a proof
   of complete network isolation.
-- Method: native goal lifecycle, no Humanize review/redraft solver loop;
+- Method: native goal lifecycle, no review/redraft solver loop;
   independent post-run reviews did not feed back into the solvers.
 - Artifacts: all 68 retain answer.md, result.json, verification.md, Lean source,
   native events/status/usage, kernel receipts and structured independent reviews.

@@ -3,7 +3,7 @@
 ## Executive result
 
 This report compares the **first answer produced by each of the nine Kimi-K3
-workers in round 0** with the final consolidated answer after the Humanize and
+workers in round 0** with the final consolidated answer after the harness and
 focused image-aware review process. It does not use the earlier GPT experiment
 as a baseline.
 
@@ -12,7 +12,7 @@ turn scores **232.0/437 raw points (53.09%)**. The final result scores
 **417.5/437 raw points (95.54%)**.
 
 After applying the official problem weights, the score changes from
-**37.535/60 (62.56%)** to **58.209/60 (97.02%)**. The Humanize workflow
+**37.535/60 (62.56%)** to **58.209/60 (97.02%)**. The harness workflow
 therefore produces a net change of:
 
 - **+185.5 raw points**;
@@ -50,7 +50,7 @@ Together, these four diagram- and structure-heavy problems account for
 ### First worker round
 
 The baseline is the first complete implementation response emitted by each
-isolated worker, before that response received its first Humanize review:
+isolated worker, before that response received its first harness review:
 
 - Q1-Q8:
   `.worktrees/qXX/runtime/round-0-attempt-1-implementation-output.md`
@@ -81,8 +81,8 @@ The endpoint is `solutions/Q1.md` through `solutions/Q9.md` on branch
 `kimi-k3-max-results`, assessed at commit
 `f6360bafbaf7f9d95034d8d75171c3415e013f23`.
 
-The endpoint includes the ordinary Humanize text-review rounds and the later
-focused gate requiring both an image-aware audit and a Humanize audit. The
+The endpoint includes the ordinary harness text-review rounds and the later
+focused gate requiring both an image-aware audit and a harness audit. The
 focused gate used the official problem pages as evidence. A preserved prior
 solution was available only as a discrepancy detector, not as the grading
 authority or the baseline for this report.
@@ -98,7 +98,7 @@ answers. Gain: **2 raw, 0.560 weighted**.
 
 ### Q2: 35/35 to 35/35
 
-The first response already matched all seven official answers. Humanize fixed
+The first response already matched all seven official answers. The harness fixed
 minor dimensional notation and presentation issues, but these did not change
 the official score. Gain: **0**.
 
@@ -219,20 +219,20 @@ First-round subpart score:
 
 Gain: **35 raw, 4.623 weighted**.
 
-## What the score change says about Humanize
+## What the score change says about the harness
 
 The result supports the value of iterative review, but the gain should be
 attributed to the **complete review system**, not to the original text-only
 reviewer in isolation.
 
-The text-only Humanize loops often fixed algebra, units, or internal wording,
+The text-only harness loops often fixed algebra, units, or internal wording,
 but they also issued false `COMPLETE` judgments on diagram-heavy errors. The
 large gains in Q3, Q6, Q7, Q8, and Q9 occurred after the workflow added the
 focused image-aware discrepancy gate and further corrective rounds. This is
 consistent with the distribution of gains: nearly 90% of recovered raw points
 came from the four most structure- and diagram-dependent problems.
 
-Humanize also increased answer length. Across Q1-Q9, the first outputs contain
+The harness also increased answer length. Across Q1-Q9, the first outputs contain
 approximately 16,815 whitespace-separated words, while the final solutions
 contain approximately 19,701 words, an increase of about **17.2%**. The score
 gain is therefore a correctness and explicitness gain, not a concision gain.

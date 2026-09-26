@@ -36,7 +36,7 @@ Lean findings: file recompiles cleanly under the pinned toolchain; no sorry/admi
     "Zoomed fragment b (both rows): P with fixed dashed P=O, one explicit P-OH, two star valences - contradicts the candidate's claim of 2 transferable P-OH protons per phosphate fragment.",
     "Zoomed worked example W: assembly conserves atoms exactly; a-cap H and e-OH plant the same glycerol hydroxyl hydrogen; d-c join is a plain ester/ether with no water elimination - no support on the page for a per-bond H2O-elimination law.",
     "Independently derived the answer from the source grammar: attachment-point handshake gives n + 13 even, hence n odd for any assembly, and the problem states an assembly exists; PL1 = cardiolipin pattern (3 glycerols, 2 phosphate bridges, 4 acyls, 13 bonds) is consistent with n = 9. Ticked choice (b) is semantically correct.",
-    "No official solutions, rubrics, answer repositories, or prior experiment answers were consulted; no Humanize/Archon used; no candidate or input files modified (scratch axiom-check file was created and removed; workspace files verified untouched)."
+    "No official solutions, rubrics, answer repositories, or prior experiment answers were consulted; no Archon used; no candidate or input files modified (scratch axiom-check file was created and removed; workspace files verified untouched)."
   ],
   "proof_checks": [
     "Recompiled independently: lake env lean IChO2026Problems/problem_icho_2026_t5_a1.lean exits 0; lake build of the IChO2026Problems module completes (style-linter warnings only).",

@@ -1,4 +1,4 @@
-# Official grading report: GPT-5.6 max Humanize run
+# Official grading report: GPT-5.6 max review-loop run
 
 ## Result
 
@@ -78,9 +78,9 @@ positions, bridge endpoints, protecting groups, and stereochemistry.
 
 ## Experiment provenance
 
-- Nine Humanize workers ran in parallel, one for each of Q1–Q9.
+- Nine review-loop workers ran in parallel, one for each of Q1–Q9.
 - The implementation workers used **`gpt-5.6-sol` with `max` reasoning**.
-- Humanize's operative iterative alignment reviewer used
+- The operative iterative alignment reviewer used
   **`gpt-5.6-sol:max`**. The separate generic `codex review` subprocess could
   not run under this host's nested sandbox and contributed no result; the nine
   alignment reviews and post-run validation completed successfully.

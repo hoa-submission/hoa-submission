@@ -17,7 +17,7 @@ We build with open source, and build for open source. We **release everything** 
 * the final worked solutions [Kimi-K3](./kimi-k3-max/solutions) and [GPT-5.6 Sol](./gpt-5.6-sol-max/solutions);
 * the grading reports, experiment records, checksums, and provenance used to audit the results.
 
-Notably, humanize enables **open source models like Kimi-K3** to achieve **68/68 Lean formalization coverage at IChO 2026** (32 answer-blind + 36 remaining) as well! As widely shared, We all love _open models X open harness_ 🎉 and the combination achieves full score at every competition:
+Notably, the harness enables **open source models like Kimi-K3** to achieve **68/68 Lean formalization coverage at IChO 2026** (32 answer-blind + 36 remaining) as well! As widely shared, We all love _open models X open harness_ 🎉 and the combination achieves full score at every competition:
 * [IMO2026](https://github.com/anonymous/imo2026) / [IOI2026](https://github.com/anonymous/ioi2026) / [IPhO2026](https://github.com/anonymous/ipho2026) / [IChO2026](https://github.com/anonymous/icho2026) / [IBO2024](https://github.com/anonymous/ibo2024)
 
 
@@ -34,7 +34,7 @@ The Kimi native run has 67 completed goals and one final failure (T1-A6).
 Independent review produced 66 structured verdicts and 2 format errors;
 proof review passed 44/68. It is separate from the historical Kimi 32+36 run.
 
-These fresh answer-blind baselines use native persisted goals, **not the Humanize
+These fresh answer-blind baselines use native persisted goals, **not the harness
 review/redraft solver loop**. Independent post-run reviews did not feed back into
 the solvers. All 68 original outputs, including rejected, blocked and conditional
 results, are preserved. The 47.06% and 45.59% figures are formalization
@@ -89,7 +89,7 @@ answers; its main deductions are T3-A1/A2, T3-A3 (21/23), T8-A4 (20/29),
 T8-A6 (6/10) and T9-A8 (16/18). The Kimi native `/goal` score is likewise a
 separate official-rubric comparison; its larger deductions include T3-A3
 (12/23), T3-A6 (0/12), T6-A6 (9/20), T7-A3 (2/15) and T8-A8 (0/4). Kimi's
-published Humanize score is the independent official-key regrade of the nine
+published harness score is the independent official-key regrade of the nine
 natural-language solutions; the 32+36 Lean artifacts were not given a second
 generous marking. Formalization **68/68** and these answer scores measure
 different things.
@@ -101,12 +101,12 @@ The table below covers every numbered theory subquestion, not the earlier
 and review had finished. These scores are rubric reconstructions, not IChO
 jury scores.
 
-GPT-5.6 Sol Humanize uses the [complete 68-target formalization](gpt-5.6-sol-full68-formalization/).
+GPT-5.6 Sol review-loop uses the [complete 68-target formalization](gpt-5.6-sol-full68-formalization/).
 Kimi-K3 is the [32-target answer-blind run](kimi-k3-answer-blind/) plus the
 [remaining 36 formalizations](kimi-k3-nl-36-formalization/). Native `/goal`
 is a one-shot baseline with **no review/redraft**, so its Lean pass rate is
 much lower. The old selected-set snapshot remains **168/168 raw** and
-**47/47 outputs** on those 32 IDs for the two Humanize runs; see the
+**47/47 outputs** on those 32 IDs for the two harness runs; see the
 [GPT validation report](gpt-5.6-sol-answer-blind/RESULTS.md).
 
 | Run | Expected raw rubric points | Formalization review | Proof review | Lean build | Placeholders | Official-answer comparison |
@@ -129,7 +129,7 @@ formalization release. Their original grading reports remain available:
 [Kimi-K3 max](kimi-k3-max/GRADING.md). Their scores are not reused for full68.
 
 The historical Kimi campaign used `anthropic-kimi-k3` through Claude Code as
-the model client, with Humanize providing the agent loop and review workflow.
+the model client, with the harness providing the agent loop and review workflow.
 Its four grounding-log completeness warnings are disclosed in the run README;
 they do not change the compile or proof-review results.
 
@@ -185,7 +185,7 @@ and the [Kimi verification notes](kimi-k3-native-goal68/#released-files-and-loca
 - [`kimi-k3-native-goal68`](kimi-k3-native-goal68/) is the separate Kimi-K3
   native Codex `/goal` baseline over all 68 theory subquestions.
 - [`FIRST_TURN_ABLATION.md`](kimi-k3-max/FIRST_TURN_ABLATION.md) compares the
-  nine unreviewed Kimi round-0 outputs with the final Humanize result under the
+  nine unreviewed Kimi round-0 outputs with the final harness result under the
   same grading convention.
 
 ## Scope

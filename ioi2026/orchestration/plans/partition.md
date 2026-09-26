@@ -149,9 +149,9 @@ read only this repository.
       entered the repository, tests, oracle, or implementation.
     - Deliver only production source, proof, statement-derived stubs/checker,
       self-authored tests/oracle, root test script, and concise reproduction
-      docs; generated files, credentials, `.humanize/`, and build products stay
+      docs; generated files, credentials, `.loop/`, and build products stay
       ignored and untracked.
-    - Final root `./test.sh` passes, Git status is clean, and native Humanize
+    - Final root `./test.sh` passes, Git status is clean, and native harness
       completion exists at the fresh run's `complete-state.md`.
   - Negative Tests (expected to FAIL):
     - Statement corruption, forbidden-source provenance, tracked runtime state,
@@ -173,7 +173,7 @@ provenance documentation.
 No result is acceptable without both exact procedures, proved `K-1` legal
 additions, proved stateless decoding for every constructor output, production-
 linked independent validation, passing root `test.sh`, clean packaging, and a
-genuine native Humanize `complete-state.md`.  Examples or empirical evidence
+genuine native harness `complete-state.md`.  Examples or empirical evidence
 alone are insufficient.
 
 ### Allowed Choices
@@ -226,7 +226,7 @@ alone are insufficient.
    - Make root `test.sh` hermetic and executable, document reproduction and
      provenance, verify statement integrity and tracked-file scope, then run the
      complete suite from repository root.
-   - Finish only after native Humanize review accepts every criterion, writes
+   - Finish only after native harness review accepts every criterion, writes
      `complete-state.md`, root tests pass, and Git status is clean.
 
 ## Implementation Notes
@@ -242,7 +242,7 @@ alone are insufficient.
   exactly so proof, source, and oracle agree.
 - Positivity plus `K<=N` supports nonemptiness, but the proof and checker must
   still verify every group label is used.
-- `test.sh` must not read `.humanize` or paths outside the repository and must
+- `test.sh` must not read `.loop` or paths outside the repository and must
   clean temporary processes/files on every exit.
 - Production comments should describe invariants, not planning or acceptance-
   criterion labels.

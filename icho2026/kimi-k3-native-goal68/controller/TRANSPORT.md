@@ -2,7 +2,7 @@
 
 This fresh 68-subquestion answer-blind experiment uses native Codex 0.153.4
 persisted goals and a hardware vendor model `vendor/moonshotai/kimi-k3`, maximum 32 jobs.
-It does not use the Humanize review/redraft loop or old generated answers.
+It does not use the review/redraft loop or old generated answers.
 
 Preflight 08 passed image reading, shell/patch tools, Lean compilation, native
 goal completion, and an independent Lean check. Earlier failed preflights are

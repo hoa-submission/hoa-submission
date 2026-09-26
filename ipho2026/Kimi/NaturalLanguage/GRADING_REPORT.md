@@ -71,12 +71,12 @@ Markdown files.
 
 - All 23 theory subparts are answered, and every official requested final
   result is present with an adequate derivation.
-- The earlier RLCR review correction in T2-C4 is reflected in the submitted
+- The earlier review correction in T2-C4 is reflected in the submitted
   file: the exact `θ⁴` coefficient and the leading eliminated-series error
   are now correct. These checks are beyond what is required for full credit.
-- The earlier RLCR review correction in T3-C4 changes only a positivity
+- The earlier review correction in T3-C4 changes only a positivity
   cross-check; the final cooling-time formula was already correct and the
   repaired inequality is valid.
 - This post-completion grading pass did not modify the submitted answers.
   Official answer material was introduced only for grading after the three
-  answer-blind Humanize runs had completed.
+  answer-blind review-loop runs had completed.

@@ -1,4 +1,4 @@
-# Blind Humanize IMO 2026 Proof: {{PROBLEM}}
+# Blind IMO 2026 Proof: {{PROBLEM}}
 
 ## Goal
 

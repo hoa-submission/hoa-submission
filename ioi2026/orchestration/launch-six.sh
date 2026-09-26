@@ -13,14 +13,14 @@ Usage: launch-six.sh --dry-run | --prepare-only | --start [options]
 Modes:
   --dry-run       Check all prerequisites; do not create or launch a run.
   --prepare-only  Create six clean worker repositories; do not launch Codex.
-  --start         Create and launch all six Humanize workers.
+  --start         Create and launch all six review-loop workers.
 
 Options:
   --wait                    Wait for all launched workers to exit.
   --run-id ID               Use a specific safe run identifier.
   --model MODEL             Worker and reviewer model (gpt-5.6-sol).
   --effort LEVEL            max, xhigh, high, medium, or low (max).
-  --max N                   Maximum Humanize rounds (42).
+  --max N                   Maximum review rounds (42).
   --codex-timeout SECONDS   Per-review timeout (5400).
   --no-isolation            Disable the Linux Landlock read boundary.
   -h, --help                Show this help.
@@ -31,10 +31,10 @@ mode=
 wait_for_workers=false
 isolation=true
 run_id=
-model="${IOI_HUMANIZE_MODEL:-gpt-5.6-sol}"
-effort="${IOI_HUMANIZE_EFFORT:-max}"
-max_iterations="${IOI_HUMANIZE_MAX:-42}"
-codex_timeout="${IOI_HUMANIZE_CODEX_TIMEOUT:-5400}"
+model="${IOI_HARNESS_MODEL:-gpt-5.6-sol}"
+effort="${IOI_HARNESS_EFFORT:-max}"
+max_iterations="${IOI_HARNESS_MAX:-42}"
+codex_timeout="${IOI_HARNESS_CODEX_TIMEOUT:-5400}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -92,8 +92,8 @@ if [[ "$isolation" == true ]]; then
   }
 fi
 
-humanize_root="$(find_humanize_root)" || {
-  printf '%s\n' 'Humanize runtime not found; set HUMANIZE_ROOT_OVERRIDE' >&2
+harness_root="$(find_harness_root)" || {
+  printf '%s\n' 'harness runtime not found; set HARNESS_ROOT_OVERRIDE' >&2
   exit 1
 }
 auth_file="$(find_auth_file)" || {
@@ -119,7 +119,7 @@ for task in "${ioi_tasks[@]}"; do
 done
 
 printf 'model:             %s:%s\n' "$model" "$effort"
-printf 'Humanize runtime:  %s\n' "$humanize_root"
+printf 'harness runtime:  %s\n' "$harness_root"
 printf 'Codex executable:  %s\n' "$codex_real"
 printf 'filesystem guard:  %s\n' "$isolation"
 printf 'worker count:      %s\n' "${#ioi_tasks[@]}"
@@ -152,14 +152,14 @@ if [[ "$isolation" == true ]]; then
 fi
 
 python3 - "$run_root/run.json" "$run_id" "$model" "$effort" \
-  "$max_iterations" "$codex_timeout" "$isolation" "$humanize_root" \
+  "$max_iterations" "$codex_timeout" "$isolation" "$harness_root" \
   "$auth_file" "$codex_real" "$landlock_binary" <<'PY'
 import datetime
 import json
 import pathlib
 import sys
 
-(path, run_id, model, effort, maximum, timeout, isolation, humanize,
+(path, run_id, model, effort, maximum, timeout, isolation, harness,
  auth, codex, landlock) = sys.argv[1:]
 payload = {
     "run_id": run_id,
@@ -169,7 +169,7 @@ payload = {
     "max_iterations": int(maximum),
     "codex_timeout": int(timeout),
     "isolation": isolation == "true",
-    "humanize_root": humanize,
+    "harness_root": harness,
     "auth_file": auth,
     "codex_real": codex,
     "landlock_binary": landlock,
@@ -186,8 +186,8 @@ for task in "${ioi_tasks[@]}"; do
   cp -a -- "$orchestration_root/worker-AGENTS.md" "$worker/AGENTS.md"
   cp -a -- "$orchestration_root/worker.gitignore" "$worker/.gitignore"
   git -C "$worker" init --initial-branch=main --quiet
-  git -C "$worker" config user.name 'IOI Humanize Reproducer'
-  git -C "$worker" config user.email 'ioi-humanize@localhost'
+  git -C "$worker" config user.name 'IOI Loop Reproducer'
+  git -C "$worker" config user.email 'ioi-loop@localhost'
   git -C "$worker" add -- .
   git -C "$worker" commit --quiet -m "Seed $task from official problem material"
   [[ -z "$(git -C "$worker" status --porcelain=v1 --untracked-files=all)" ]] || {
@@ -211,7 +211,7 @@ if [[ "$mode" == prepare-only ]]; then
   exit 0
 fi
 
-printf '%s\n' 'Starting six detached max-effort Humanize RLCR workers.'
+printf '%s\n' 'Starting six detached max-effort review-loop workers.'
 printf '%s\n' 'This can consume substantial model quota.'
 pids=()
 for task in "${ioi_tasks[@]}"; do

@@ -89,7 +89,7 @@ self-authored simulator/property tests.
   pseudocode-level phase structure, correctness proof, exact resource analysis,
   complexity, API/build instructions, and test coverage. Final source is clean,
   portable C++20, contains no debug output or `main`, and does not mention
-  Humanize plan terminology in implementation comments.
+  harness plan terminology in implementation comments.
   - Positive Tests (expected to PASS):
     - A reviewer can match every proof invariant and bound to the code and tests.
   - Negative Tests (expected to FAIL):
@@ -128,7 +128,7 @@ correctness documentation. Partial-subtask strategies are insufficient.
   task-archive data, grading examples, hidden tests, or another worker's files.
 - Cannot inspect any outside path named `tests`; self-authored cases belong only
   under this repository's `selftests/` directory.
-- Must not modify `plan.md` after Humanize initialization.
+- Must not modify `plan.md` after harness initialization.
 
 ## Dependencies and Sequence
 
@@ -194,7 +194,7 @@ correctness documentation. Partial-subtask strategies are insufficient.
      formulas.
    - Phase B (`coding`): Remove research-only clutter, confirm repository
      reproducibility, leave no uncommitted implementation changes, and provide
-     the Humanize-required round/final summaries through its native Stop hook.
+     the harness-required round/final summaries through its native Stop hook.
 
 ## Implementation Notes
 

@@ -7,7 +7,7 @@ verification.** Together with the earlier
 
 The natural-language answers, Lean formalizations, proofs and reviews in this
 36-target release were all produced with **Kimi-K3** through the existing
-Humanize/Archon harness, initially at concurrency 32 with scoped single-target
+Archon harness, initially at concurrency 32 with scoped single-target
 recoveries.
 
 | Measure | Result |

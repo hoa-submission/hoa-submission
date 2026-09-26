@@ -14,8 +14,8 @@ for workspace in "$RUN_ROOT"/workspaces/*; do
     pid="$(tmux list-panes -t "$session_name" -F '#{pane_pid}' | head -n 1)"
   fi
   state_file=
-  if [[ -d "$workspace/.humanize/rlcr" ]]; then
-    state_file="$(find "$workspace/.humanize/rlcr" -mindepth 2 -maxdepth 2 -name state.md -type f | sort | tail -n 1)"
+  if [[ -d "$workspace/.loop" ]]; then
+    state_file="$(find "$workspace/.loop" -mindepth 2 -maxdepth 2 -name state.md -type f | sort | tail -n 1)"
   fi
   round=-
   loop_state=-

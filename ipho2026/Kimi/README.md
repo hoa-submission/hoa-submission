@@ -2,7 +2,7 @@
 
 This directory contains two Kimi answer-blind submissions for IPhO 2026 and
 their separate post-completion grading audits: the original Lean answer set
-and a later natural-language, theory-only Humanize RLCR experiment.
+and a later natural-language, theory-only review-loop experiment.
 
 ## Contents
 

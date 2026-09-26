@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HUMANIZE_ROOT="$ROOT/humanize"
+ORCHESTRATION_ROOT="$ROOT/orchestration"
 INPUT_ROOT="$ROOT/inputs"
 MATH_TEMPLATE="$INPUT_ROOT/math-flow-bench"
 WORK_ROOT="$ROOT/work"
@@ -31,7 +31,7 @@ PROBE_COUNT="${REPRO_PROBE_COUNT:-4}"
 MAX_TURNS="${REPRO_MAX_TURNS:-50}"
 WORKER_TIMEOUT="${REPRO_WORKER_TIMEOUT:-7200}"
 REVIEW_TIMEOUT="${REPRO_REVIEW_TIMEOUT:-7200}"
-RUN_ID="${REPRO_RUN_ID:-humanize-98-$(date -u +%Y%m%dT%H%M%SZ)}"
+RUN_ID="${REPRO_RUN_ID:-run-98-$(date -u +%Y%m%dT%H%M%SZ)}"
 BASE_CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 OUT_ROOT="$ROOT/runs"
 SKIP_BOOTSTRAP=0
@@ -51,7 +51,7 @@ Modes:
   bootstrap   Build the pinned Lean and Comparator environment under work/.
   prepare     Bootstrap, then create and audit all sanitized workspaces without
               making model calls.
-  run         Bootstrap and launch the complete Humanize worker/reviewer run.
+  run         Bootstrap and launch the complete worker/reviewer run.
 
 Options for prepare/run:
   --jobs N                    Main concurrency. Historical value: 64.
@@ -136,8 +136,8 @@ if missing:
 print(f"validated {len(selected)} unique problems against {len(records)} JSONL records")
 PY
 
-  bash -n "$HUMANIZE_ROOT/scripts/run-failed-putnambench.sh"
-  python3 - "$HUMANIZE_ROOT/scripts/verify-putnambench-axle.py" \
+  bash -n "$ORCHESTRATION_ROOT/scripts/run-failed-putnambench.sh"
+  python3 - "$ORCHESTRATION_ROOT/scripts/verify-putnambench-axle.py" \
     "$MATH_TEMPLATE/scripts/validate-putnambench-output.py" <<'PY'
 import ast
 import sys
@@ -273,7 +273,7 @@ run_experiment() {
   PROBE_COUNT="$PROBE_COUNT" \
   WORKER_TIMEOUT_SECONDS="$WORKER_TIMEOUT" \
   REVIEW_TIMEOUT_SECONDS="$REVIEW_TIMEOUT" \
-    bash "$HUMANIZE_ROOT/scripts/run-failed-putnambench.sh" \
+    bash "$ORCHESTRATION_ROOT/scripts/run-failed-putnambench.sh" \
       --run-id "$RUN_ID" \
       --failure-file "$INPUT_ROOT/Failed_problems.md" \
       --putnambench-jsonl "$INPUT_ROOT/putnam_bench.jsonl" \

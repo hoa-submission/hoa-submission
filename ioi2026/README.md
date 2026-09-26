@@ -1,7 +1,7 @@
 # Anonymous at IOI 2026
 
 
-With the power of Humanize, we, the **Anonymous team, have aced all 6/6 IOI 2026 problems**  using a *fully agentic, YOLO-style approach*. The scores are graded by [codeforces](https://codeforces.com/)
+With the power of an agentic review-loop harness, we, the **Anonymous team, have aced all 6/6 IOI 2026 problems**  using a *fully agentic, YOLO-style approach*. The scores are graded by [codeforces](https://codeforces.com/)
 
 We build with open source, and build for open source. We **release everything** including: 
 * the [official problem packages](./problems) for Day 1 and Day 2; 
@@ -53,7 +53,7 @@ strictly compiles the three Day 2 artifacts. A successful run ends with:
 PASS: IOI 2026 clean bundle verified
 ```
 
-## Reproduce the six Humanize runs
+## Reproduce the six review-loop runs
 
 The worker repositories are seeded only with the corresponding official
 problem and immutable plan; the final files under `submissions/` are never
@@ -64,7 +64,7 @@ worker from reading the reference results or sibling repositories.
 # Check prerequisites without writing or launching workers.
 ./orchestration/launch-six.sh --dry-run
 
-# Launch six detached Humanize RLCR workers.
+# Launch six detached review-loop workers.
 ./orchestration/launch-six.sh --start
 
 # Follow their review rounds and final status.
@@ -108,20 +108,20 @@ auth file and model setting without launching workers.
 - `interfaces/classroom.h`: a statement-derived compilation shim for the
   Classroom API; it is not an official attachment.
 - `orchestration/`: six immutable task plans plus launch, monitor, resume, and
-  collection scripts for independent Humanize RLCR workers.
+  collection scripts for independent review-loop workers.
 - `MANIFEST.sha256`: checksums for every bundled file except the manifest.
 - `verify.sh`: the one-command public reproduction gate.
 
 The official Day 1 attachment stubs are retained unchanged because they are
 part of the problem packages. No official or editorial solutions, hidden
-tests, Humanize runtime state, model transcripts, build products, or nested Git
+tests, harness runtime state, model transcripts, build products, or nested Git
 repositories are included.
 
 ## Provenance
 
 The six sources were copied byte-for-byte from this repository's root sources
 at commit `b1c4c8bd775cadab3c00de11e49ff79f7c98a0a9`. Their hashes also match the
-finalized Humanize worker artifacts, including the separately reviewed
+finalized review-loop worker artifacts, including the separately reviewed
 Partition artifact.
 
 Day 1 problem material was copied unchanged from the official IOI 2026 release.

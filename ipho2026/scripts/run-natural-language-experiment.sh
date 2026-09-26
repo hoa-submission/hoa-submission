@@ -12,8 +12,8 @@ usage() {
     '  PROBLEM    T1, T2, or T3.' \
     '  INPUT_DIR  Directory containing only that problem statement and its figures.' \
     '  RUN_DIR    New or empty directory outside this release checkout.' \
-    '  BUILDER    Optional Humanize agent (default: codex/gpt-5.6-sol:max).' \
-    '  REVIEWER   Optional Humanize agent (default: same as BUILDER).' \
+    '  BUILDER    Optional harness agent (default: codex/gpt-5.6-sol:max).' \
+    '  REVIEWER   Optional harness agent (default: same as BUILDER).' \
     '' \
     'Example:' \
     '  scripts/run-natural-language-experiment.sh T1 /path/to/T1-input ../ipho2026-runs/T1'
@@ -43,7 +43,7 @@ case "$problem" in
     ;;
 esac
 
-for command_name in git hmz; do
+for command_name in git harness; do
   if ! command -v "$command_name" >/dev/null 2>&1; then
     printf 'error: required command not found: %s\n' "$command_name" >&2
     exit 127
@@ -140,24 +140,24 @@ Do not weaken these rules or modify this plan.
 EOF
 
 git -C "$run_root" init --initial-branch=main --quiet
-git -C "$run_root" config user.name 'IPhO Humanize Experiment'
-git -C "$run_root" config user.email 'ipho-humanize@localhost'
+git -C "$run_root" config user.name 'IPhO Loop Experiment'
+git -C "$run_root" config user.email 'ipho-loop@localhost'
 git -C "$run_root" add -- .
 git -C "$run_root" commit --quiet -m "Seed answer-blind IPhO 2026 $problem workspace"
 
-export HUMANIZE_SENTRY=${HUMANIZE_SENTRY:-off}
+export HARNESS_SENTRY=${HARNESS_SENTRY:-off}
 
-printf 'Starting Humanize RLCR for %s in %s\n' "$problem" "$run_root"
+printf 'Starting review loop for %s in %s\n' "$problem" "$run_root"
 (
   cd -- "$run_root"
-  hmz exec -f official/humanize1:rlcr \
+  harness exec -f official/review-loop \
     -a "$builder" \
     -a "$reviewer" \
     "IPhO 2026 $problem answer-blind natural-language experiment"
 )
 
 if [[ ! -s "$run_root/solution.md" ]]; then
-  printf 'error: Humanize exited without producing solution.md\n' >&2
+  printf 'error: harness exited without producing solution.md\n' >&2
   exit 1
 fi
 

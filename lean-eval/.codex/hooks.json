@@ -1,14 +1,14 @@
 {
-  "description": "Humanize native Stop hook for the seed-gap run",
+  "description": "Native Stop hook for the seed-gap run",
   "hooks": {
     "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "bash -lc 'exec \"$HUMANIZE_ROOT/hooks/loop-codex-stop-hook.sh\"'",
+            "command": "bash -lc 'exec \"$HARNESS_ROOT/hooks/loop-codex-stop-hook.sh\"'",
             "timeout": 21600,
-            "statusMessage": "humanize RLCR review"
+            "statusMessage": "loop review"
           }
         ]
       }

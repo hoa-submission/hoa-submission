@@ -1,4 +1,4 @@
-# Independent official-key grading: Kimi K3 max Humanize run
+# Independent official-key grading: Kimi K3 max review-loop run
 
 ## Result
 

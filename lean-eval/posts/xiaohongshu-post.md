@@ -10,9 +10,9 @@ Lean-Eval 是一个公开、提交制的 Lean 形式化榜单，核心评测对�
 
 我们更想分享的是：flow 和 agent loop 可以成为模型能力的放大器。
 
-每道题开始时，我们先让模型把数学思路写成明确的自然语言证明，再进入 Humanize。Worker 随后把这条证明路线映射到准确的 Lean 陈述、Mathlib API 和桥接引理。
+每道题开始时，我们先让模型把数学思路写成明确的自然语言证明，再进入实现循环。Worker 随后把这条证明路线映射到准确的 Lean 陈述、Mathlib API 和桥接引理。
 
-Humanize flow 和 RLCR agent loop 会在多轮中固定目标。一个 agent 实现，独立 reviewer 找问题，编译错误、验证失败和 review 意见直接进入下一轮。Stop hook 阻止过早结束。它们不替模型思考，而是提供结构、记忆、真实反馈和反复纠错的机会，从而放大模型已有的推理能力。
+flow 和 review agent loop 会在多轮中固定目标。一个 agent 实现，独立 reviewer 找问题，编译错误、验证失败和 review 意见直接进入下一轮。Stop hook 阻止过早结束。它们不替模型思考，而是提供结构、记忆、真实反馈和反复纠错的机会，从而放大模型已有的推理能力。
 
 IMO 2026 已经展示过同一原理：GPT-5.6 和 Kimi K3 两条路线都完成了 6/6 Lean 验证。现在，Lean-Eval 上的 165 道题把这套方法扩展到了更广泛的研究级数学。
 

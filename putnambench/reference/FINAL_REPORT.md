@@ -1,6 +1,6 @@
 # Final Experiment Report
 
-- Run ID: `failed-humanize-jsonl98-20260709T003743Z`
+- Run ID: `failed-jsonl98-20260709T003743Z`
 - Result: **96/98 passed**, **2/98 reached the 50-turn cap**
 - Model: `gpt-5.5`, reasoning effort `xhigh`
 - Concurrency: launched up to `64`; after rate limits, drained and continued at `16`
@@ -14,16 +14,16 @@
 
 Verified proof files are under:
 
-`/home/user/workspace/failed-putnambench-humanize-axle-comparator-runs/failed-humanize-jsonl98-20260709T003743Z/workspaces/<job>/MathFlowBench/<Module>.lean`
+`/home/user/workspace/failed-putnambench-axle-comparator-runs/failed-jsonl98-20260709T003743Z/workspaces/<job>/MathFlowBench/<Module>.lean`
 
 The exact per-problem paths, hashes, terminal turns, review files, and AXLE request IDs are indexed in:
 
-- `/home/user/workspace/failed-putnambench-humanize-axle-comparator-runs/failed-humanize-jsonl98-20260709T003743Z/FINAL_ARTIFACTS.tsv`
-- `/home/user/workspace/failed-putnambench-humanize-axle-comparator-runs/failed-humanize-jsonl98-20260709T003743Z/FINAL_ARTIFACTS.json`
+- `/home/user/workspace/failed-putnambench-axle-comparator-runs/failed-jsonl98-20260709T003743Z/FINAL_ARTIFACTS.tsv`
+- `/home/user/workspace/failed-putnambench-axle-comparator-runs/failed-jsonl98-20260709T003743Z/FINAL_ARTIFACTS.json`
 
 ## Unresolved
 
-- `putnam_2013_a5`: turn 50, candidate only (not verified as a proof): `/home/user/workspace/failed-putnambench-humanize-axle-comparator-runs/failed-humanize-jsonl98-20260709T003743Z/workspaces/j69-putnam_2013_a5/MathFlowBench/Putnam2013A5.lean`
-- `putnam_2017_b3`: turn 50, candidate only (not verified as a proof): `/home/user/workspace/failed-putnambench-humanize-axle-comparator-runs/failed-humanize-jsonl98-20260709T003743Z/workspaces/j77-putnam_2017_b3/MathFlowBench/Putnam2017B3.lean`
+- `putnam_2013_a5`: turn 50, candidate only (not verified as a proof): `/home/user/workspace/failed-putnambench-axle-comparator-runs/failed-jsonl98-20260709T003743Z/workspaces/j69-putnam_2013_a5/MathFlowBench/Putnam2013A5.lean`
+- `putnam_2017_b3`: turn 50, candidate only (not verified as a proof): `/home/user/workspace/failed-putnambench-axle-comparator-runs/failed-jsonl98-20260709T003743Z/workspaces/j77-putnam_2017_b3/MathFlowBench/Putnam2017B3.lean`
 
 The unresolved candidate files are retained for diagnosis, but they are not counted or labeled as proofs.

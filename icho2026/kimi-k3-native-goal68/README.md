@@ -3,8 +3,8 @@
 Separate fresh answer-blind experiment over **9 theory problems / 68 numbered
 subquestions**, using native persisted Codex goals, Kimi-K3
 (`vendor/moonshotai/kimi-k3`) and an observed peak of **32 concurrent solver
-jobs**. This is not the Humanize review/redraft solver loop and is not the
-earlier 32+36 Humanize coverage.
+jobs**. This is not the review/redraft solver loop and is not the
+earlier 32+36 harness coverage.
 
 | Measure | Result |
 |---|---:|
@@ -40,7 +40,7 @@ See [all 68 results and reviewer explanations](controller/RESULTS.md),
 - PyMuPDF was installed before launch so the already supplied PDF could be read.
 - Reported native-goal usage: 21,134,287 tokens. This is not a billing estimate.
 - This is not a matched-budget causal comparison against the historical
-  Humanize experiments, which used different workflows and input scopes.
+  Earlier experiments, which used different workflows and input scopes.
 
 ## Official-answer scoring status
 

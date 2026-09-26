@@ -46,14 +46,14 @@ solutions for the complete evidence and methodology.
 ## Natural-language experiment
 
 The primary experiment is the answer-blind natural-language run: one isolated
-Humanize builder/reviewer loop solves one theory problem and writes a complete
+The builder/reviewer loop solves one theory problem and writes a complete
 solution.
 The repository now includes
 [`scripts/run-natural-language-experiment.sh`](scripts/run-natural-language-experiment.sh),
-which prepares a clean problem-only Git workspace and starts the Humanize RLCR
+which prepares a clean problem-only Git workspace and starts the review
 builder/reviewer loop.
 
-Install [Humanize](https://github.com/anonymous/humanize2), place one problem
+Install a review-loop harness providing the `harness` CLI, place one problem
 statement and its figures in an input directory, and run:
 
 ```bash
@@ -63,9 +63,9 @@ scripts/run-natural-language-experiment.sh \
 
 Repeat with `T2` and `T3` in separate input and run directories. The run
 directory must be new or empty and outside this checkout; the launcher refuses
-obvious solution, answer, grading, marking-scheme, and rubric files. Humanize
+obvious solution, answer, grading, marking-scheme, and rubric files. The harness
 uses `codex/gpt-5.6-sol:max` for both builder and reviewer by default. Pass a
-fourth and fifth argument to select different Humanize agents. Run `--help` for
+fourth and fifth argument to select different harness agents. Run `--help` for
 the full command syntax.
 
 The launcher creates `solution.md` in the run directory. To reproduce the
@@ -88,7 +88,7 @@ post-completion evaluation is in the
   their grading audit.
 - `Ipho2026Gpt56solBlind/` — optional GPT-5.6 Sol formalizations.
 - `Kimi/Ipho2026KimiK3Blind32/` — optional Kimi K3 Max formalizations.
-- `scripts/run-natural-language-experiment.sh` — answer-blind Humanize launcher.
+- `scripts/run-natural-language-experiment.sh` — answer-blind review-loop launcher.
 - `GRADING_REPORT.md` — post-completion comparison of the formalizations with
   the official results.
 

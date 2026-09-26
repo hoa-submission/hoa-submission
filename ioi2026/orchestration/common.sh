@@ -69,17 +69,17 @@ require_task() {
   return 1
 }
 
-find_humanize_root() {
+find_harness_root() {
   local candidate
-  if [[ -n "${HUMANIZE_ROOT_OVERRIDE:-}" ]]; then
-    candidate=$HUMANIZE_ROOT_OVERRIDE
-  elif [[ -d "$bundle_root/../.codex/skills/humanize" ]]; then
-    candidate="$bundle_root/../.codex/skills/humanize"
+  if [[ -n "${HARNESS_ROOT_OVERRIDE:-}" ]]; then
+    candidate=$HARNESS_ROOT_OVERRIDE
+  elif [[ -d "$bundle_root/../.codex/skills/review-loop" ]]; then
+    candidate="$bundle_root/../.codex/skills/review-loop"
   else
-    candidate="${HOME}/.codex/skills/humanize"
+    candidate="${HOME}/.codex/skills/review-loop"
   fi
   candidate="$(CDPATH= cd -- "$candidate" 2>/dev/null && pwd -P)" || return 1
-  [[ -x "$candidate/scripts/setup-rlcr-loop.sh" ]] || return 1
+  [[ -x "$candidate/scripts/setup-review-loop.sh" ]] || return 1
   [[ -x "$candidate/hooks/loop-codex-stop-hook.sh" ]] || return 1
   printf '%s\n' "$candidate"
 }

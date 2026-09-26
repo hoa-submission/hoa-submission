@@ -1,7 +1,7 @@
 import Lake
 open Lake DSL
 
-package IMO2026Humanize where
+package IMO2026 where
   leanOptions := #[
     ⟨`pp.unicode.fun, true⟩,
     ⟨`autoImplicit, false⟩

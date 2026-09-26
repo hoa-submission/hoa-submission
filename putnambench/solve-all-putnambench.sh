@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HUMANIZE_ROOT="$ROOT/humanize"
+ORCHESTRATION_ROOT="$ROOT/orchestration"
 JSONL="$ROOT/inputs/putnam_bench.jsonl"
 WORK_ROOT="$ROOT/work"
 MATH_ROOT="$WORK_ROOT/math-flow-bench"
@@ -30,7 +30,7 @@ Usage:
   ./solve-all-putnambench.sh [options]
 
 Selects all 672 problems from the packaged PutnamBench JSONL and runs the
-Comparator-and-AXLE-gated Humanize solver. Later campaigns contain only
+Comparator-and-AXLE-gated solver. Later campaigns contain only
 problems that did not pass an earlier campaign.
 
 Options:
@@ -150,7 +150,7 @@ run_campaign() {
   PROBE_COUNT="$PROBE_COUNT" \
   WORKER_TIMEOUT_SECONDS="$WORKER_TIMEOUT" \
   REVIEW_TIMEOUT_SECONDS="$REVIEW_TIMEOUT" \
-    bash "$HUMANIZE_ROOT/scripts/run-failed-putnambench.sh" \
+    bash "$ORCHESTRATION_ROOT/scripts/run-failed-putnambench.sh" \
       --run-id "$campaign_id" \
       --failure-file "$selection" \
       --putnambench-jsonl "$JSONL" \

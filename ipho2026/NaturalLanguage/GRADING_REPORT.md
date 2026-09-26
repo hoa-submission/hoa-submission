@@ -71,7 +71,7 @@ Markdown files.
 
 - All 23 theory subparts are answered, and every marking-scheme result is
   supported by an adequate derivation.
-- The answer-blind RLCR review corrected one T1-C2 presentation detail before
+- The answer-blind review corrected one T1-C2 presentation detail before
   terminal approval: a ten-digit cross-check had used a more precise atomic
   mass conversion than the rounded value printed in the solution. The final
   file reports the reproducible `2.02967×10⁻¹¹ eV`; the boxed

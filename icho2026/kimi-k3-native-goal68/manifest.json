@@ -74,7 +74,7 @@
   ],
   "protocol": "native-codex-thread-goal-v1",
   "fresh_answer_blind": true,
-  "humanize_solver_loop": false,
+  "solver_loop": false,
   "supplementary_assumptions": [],
   "token_budget": null,
   "source_sha256": "865b4417565ec94097e4287aa7746ee08fb527c80f72b7c15378fa0db9fd8ddc",

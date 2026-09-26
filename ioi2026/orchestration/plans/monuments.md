@@ -72,7 +72,7 @@ The deliverables are `solutions/02-monuments/solution.cpp`, a rigorous `README.m
   - After forced deficits are satisfied, remaining movable monuments may go individually to zero or in pairs to opposite coordinates; for two originals `x <= y`, their optimal unconstrained symmetric-pair cost is `|x + y|`.
   - The difficult global choice is which movable monuments satisfy forced destinations and which participate in movable pairs; it must be optimized jointly rather than greedily.
 - Cannot use web access, Git remotes, official or unofficial editorials/solutions, task archives, grading examples, hidden/public grading tests, sibling-worker files, or any unpermitted input source.
-- Cannot weaken constraints, edit the immutable plan after tracking begins, or replace the Humanize RLCR loop with a one-shot implementation.
+- Cannot weaken constraints, edit the immutable plan after tracking begins, or replace the review loop with a one-shot implementation.
 
 ## Dependencies and Sequence
 
@@ -96,12 +96,12 @@ The deliverables are `solutions/02-monuments/solution.cpp`, a rigorous `README.m
 4. **Validation and proof audit**
    - Run strict-warning, optimized, and address/undefined-sanitizer builds.
    - Run exhaustive/differential cases and maximum-size deterministic stress patterns.
-   - Check each proof lemma against code invariants and add a regression for every RLCR-discovered defect.
+   - Check each proof lemma against code invariants and add a regression for every review-discovered defect.
 
 5. **Submission packaging and review closure**
    - Finish `README.md`, executable `test.sh`, and clean source layout.
    - Ensure no generated binary, external data, or grading material is committed.
-   - Let the Humanize implementation and code-review phases run until `complete-state.md` is produced, then commit the reviewed artifacts.
+   - Let the implementation and code-review phases run until `complete-state.md` is produced, then commit the reviewed artifacts.
 
 ## Implementation Notes
 

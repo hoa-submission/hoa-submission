@@ -64,7 +64,7 @@ Unrounded totals used in the calculation:
 ## Scope
 
 `Worker` includes implementation, recovery, and outer finalization sessions.
-`Reviewer-side` includes Humanize round reviewers, full-alignment and guardian
+`Reviewer-side` includes loop round reviewers, full-alignment and guardian
 checks, mandatory final code review, and final simplifier reviews. Failed,
 interrupted, recovery, and successful sessions are included because all of
 them consumed tokens. Top-level orchestration-agent tokens, local shell work,

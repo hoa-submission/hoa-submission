@@ -3,7 +3,7 @@
 Separate fresh answer-blind experiment over **9 theory problems / 68 numbered
 subquestions**, using native persisted Codex goals, GPT-5.6 Sol with `xhigh`
 reasoning, and an observed peak of **32 concurrent solver jobs**. This is not
-the Humanize review/redraft solver loop and is not the earlier selected 32-task run.
+the review/redraft solver loop and is not the earlier selected 32-task run.
 
 | Measure | Result |
 |---|---:|
@@ -38,7 +38,7 @@ See [all 68 results and reviewer explanations](controller/RESULTS.md),
   [environment amendment](controller/pdf-dependency-amendment.json).
 - Reported native-goal usage: 8,502,158 tokens. This is not a billing estimate.
 - This is not a matched-budget causal comparison against the historical
-  Humanize experiments, which used different workflows and input scopes.
+  Earlier experiments, which used different workflows and input scopes.
 
 ## Official-answer scoring status
 

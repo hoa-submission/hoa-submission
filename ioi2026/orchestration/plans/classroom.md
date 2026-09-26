@@ -97,7 +97,7 @@ The final repository must contain the exact contestant implementation at `soluti
     - A clean checkout on branch `main` can run `./test.sh`; afterward `git status --short` is empty.
     - Final tracked artifacts include the statement, immutable `plan.md`, contestant source, explanation, self-authored support/harness files, `test.sh`, and appropriate ignore rules only.
   - Negative Tests (expected to FAIL):
-    - `test.sh` must reject or avoid persistent binaries, logs, core files, generated state, grading data, or tracked `.humanize` content.
+    - `test.sh` must reject or avoid persistent binaries, logs, core files, generated state, grading data, or tracked `.loop` content.
 
 ## Path Boundaries
 
@@ -117,8 +117,8 @@ The exact production source, self-authored mock declaration, rigorous proof, exe
 - May use empty, one-integer, and two-integer papers and any integer symbols in `[0,63]`.
 - Must not use network access, web search, Git remotes, outside repositories/files, official or unofficial attachments/graders/tests/solutions/editorials, hidden data, or undocumented grader behavior.
 - Must not use mutable cross-call state, undefined behavior, process persistence, nondeterminism, or a paper longer than two as a fallback.
-- Must not alter `problem/statement-en.pdf` or this tracked `plan.md` after the Humanize run begins.
-- Production code must not contain planning labels such as `AC-`, `Milestone`, or Humanize runtime terminology.
+- Must not alter `problem/statement-en.pdf` or this tracked `plan.md` after the harness run begins.
+- Production code must not contain planning labels such as `AC-`, `Milestone`, or harness runtime terminology.
 
 ## Dependencies and Sequence
 
@@ -143,9 +143,9 @@ The exact production source, self-authored mock declaration, rigorous proof, exe
    - Implement executable root `test.sh` with temporary builds, strict compilation, optimized tests, bounded sanitizer tests, process-isolation tests, cleanup traps, and meaningful diagnostics.
    - Run the full suite from repository root, verify the statement hash and immutable plan, inspect tracked files, and ensure no build/runtime/grading artifacts remain.
 
-5. **Humanize review and finalize**
-   - Address every implementation and independent review finding through the native RLCR rounds, preserving the immutable plan and evidence boundary.
-   - Finalize only after all acceptance criteria are proved/tested, `./test.sh` passes from root, Git is clean on `main`, the statement hash matches, and Humanize produces its genuine `complete-state.md`.
+5. **Review and finalize**
+   - Address every implementation and independent review finding through the native review rounds, preserving the immutable plan and evidence boundary.
+   - Finalize only after all acceptance criteria are proved/tested, `./test.sh` passes from root, Git is clean on `main`, the statement hash matches, and the harness produces its genuine `complete-state.md`.
 
 ## Implementation Notes
 
@@ -154,4 +154,4 @@ The exact production source, self-authored mock declaration, rigorous proof, exe
 - A locally convenient encoding is not acceptable unless the explanation proves that all symbol values remain in `[0,63]`, all arrays remain length at most two, every frozen paper is returned exactly, and the decoder is total and unambiguous on every reachable state.
 - Keep validation code conceptually separate from solution code. Do not copy a production decoder into the oracle or derive expected results from returned papers.
 - Prefer explicit assertions and compact failure witnesses over silently skipping expensive or difficult cases. Mandatory test counts must remain fixed and deterministic; optional extra stress may accept a seed/count override.
-- All runtime state belongs in `.humanize/` and must remain ignored/untracked. Do not manually edit Humanize state or completion files.
+- All runtime state belongs in `.loop/` and must remain ignored/untracked. Do not manually edit harness state or completion files.

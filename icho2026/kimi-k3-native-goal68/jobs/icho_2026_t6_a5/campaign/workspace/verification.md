@@ -110,7 +110,7 @@ run above is clean.
 - `TASK.json` — subquestion metadata, requested outputs, policies.
 
 No official solutions, marking schemes, grading reports, historical
-experiment answers/proofs, answer repositories, Humanize/Archon, or external
+experiment answers/proofs, answer repositories, Archon, or external
 solver agents were used. The stereochemical legs NaH/PhI(OAc)₂/Yamamoto are
 invoked only as ordinary general chemistry (allowed "trusted_general_law").
 

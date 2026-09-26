@@ -7,8 +7,8 @@ pids/
 !.codex/hooks.json
 
 # Nested workspace outputs
-**/.humanize/
-**/.humanize-setup.log
+**/.loop/
+**/.loop-setup.log
 **/.lake/
 **/lake-manifest.json
 

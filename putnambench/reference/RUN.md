@@ -1,6 +1,6 @@
-# Failed PutnamBench Humanize + Comparator + AXLE Run
+# Failed PutnamBench Comparator + AXLE Run
 
-- Run ID: `failed-humanize-jsonl98-20260709T003743Z`
+- Run ID: `failed-jsonl98-20260709T003743Z`
 - Failure source: `/home/user/workspace/Failed_problems.md`
 - Problems: 98
 - Problem source: `/home/user/workspace/putnam_bench.jsonl`
@@ -12,7 +12,7 @@
 - Requested main concurrency: 64
 - Rate-limited handoff concurrency: 16
 - Base Codex home: `/home/user/.codex`
-- Per-job Codex homes: `/home/user/.codex/failed-putnambench-humanize-axle-comparator/failed-humanize-jsonl98-20260709T003743Z`
+- Per-job Codex homes: `/home/user/.codex/failed-putnambench-axle-comparator/failed-jsonl98-20260709T003743Z`
 - Solver network: blocked by seccomp for every tool shell
 - Worker self-check: current Comparator, target-version lean4export, and real Landrun
 - Reviewer network: permitted only for the prompted AXLE verifier call

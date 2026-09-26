@@ -3,7 +3,7 @@
 The fresh Kimi-K3 native-goal 68-target run and its independent validation/review attempts have ended. This is an experiment completion record, not a claim that every answer or proof passed.
 
 - Endpoint and multimodal/tool/native-goal compatibility: `preflight.json` and `TRANSPORT.md`. Early failures remain in `provider-compatibility.json`; the later successful preflight preceded solver launch.
-- Scope/model: `../manifest.json`, 68 targets, `vendor/moonshotai/kimi-k3`, a hardware vendor endpoint, no Humanize loop. No historical generated answers or supplementary user model assumptions were supplied.
+- Scope/model: `../manifest.json`, 68 targets, `vendor/moonshotai/kimi-k3`, a hardware vendor endpoint, no harness loop. No historical generated answers or supplementary user model assumptions were supplied.
 - Native persisted goals: `native-record-audit.json`, freshly replayed after all jobs ended: 68 distinct threads, 67 complete and 1 blocked; objectives, task IDs, and reported token usage agree. Recorded solver interval peak is 32, with no skipped intervals. This is not a process-level concurrency trace.
 - Isolation/input evidence: `input-snapshot-audit.json`, manifest seed hashes (rechecked in native audit), and problem-only seed isolation manifest. Original questions and blank answer sheets are authorized. Other generated candidates and reviews are not solver inputs. Ordinary scientific HTTP was permitted; zero native web-search events is not proof of full network isolation.
 - Artifact integrity: `final-artifact-audit.json` checks all 68 original and reviewer-copy candidate hash sets. All are fresh. All 66 structured verdicts reproduce under the existing strict aggregate gate.

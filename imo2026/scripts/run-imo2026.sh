@@ -2,8 +2,8 @@
 set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HUMANIZE_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-$HUMANIZE_ROOT}"
+HARNESS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$HARNESS_ROOT}"
 MATH_FLOW_BENCH_ROOT="${MATH_FLOW_BENCH_ROOT:-$WORKSPACE_ROOT/base}"
 IMO2026_SOURCE_ROOT="${IMO2026_SOURCE_ROOT:-$WORKSPACE_ROOT/base/IMO2026}"
 FAILURE_FILE="${FAILURE_FILE:-}"
@@ -12,13 +12,13 @@ QUESTION_FILE="${QUESTION_FILE:-}"
 BASE_CODEX_HOME="${BASE_CODEX_HOME:-/root/storage/user-workspace/.codex}"
 OUT_ROOT="${OUT_ROOT:-$WORKSPACE_ROOT/runs}"
 COMPARATOR_TOOLS_ROOT="${COMPARATOR_TOOLS_ROOT:-$WORKSPACE_ROOT/tools}"
-LOCAL_RUNTIME_TEMPLATE="${LOCAL_RUNTIME_TEMPLATE:-/tmp/imo2026-humanize-runtime-v431}"
-LOCAL_RUNS_ROOT="${LOCAL_RUNS_ROOT:-/tmp/imo2026-humanize-runs}"
+LOCAL_RUNTIME_TEMPLATE="${LOCAL_RUNTIME_TEMPLATE:-/tmp/imo2026-runtime-v431}"
+LOCAL_RUNS_ROOT="${LOCAL_RUNS_ROOT:-/tmp/imo2026-runs}"
 COMPARATOR_BIN="${COMPARATOR_BIN:-$LOCAL_RUNTIME_TEMPLATE/comparator-tools/comparator}"
 LEAN4EXPORT_BIN="${LEAN4EXPORT_BIN:-$LOCAL_RUNTIME_TEMPLATE/checker-tools/lean4export}"
 LANDRUN_BIN="${LANDRUN_BIN:-$LOCAL_RUNTIME_TEMPLATE/comparator-tools/landrun}"
 CODEX_BIN="${CODEX_BIN:-/usr/local/share/nvm/versions/node/v24.18.0/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex}"
-HUMANIZE_USER_PREFIX="${HUMANIZE_USER_PREFIX:-humanize-imo}"
+HARNESS_USER_PREFIX="${HARNESS_USER_PREFIX:-imo}"
 
 CODEX_MODEL="gpt-5.6-sol"
 MAX_TURNS="${MAX_TURNS:-50}"
@@ -29,7 +29,7 @@ WORKER_TIMEOUT_SECONDS="${WORKER_TIMEOUT_SECONDS:-7200}"
 REVIEW_TIMEOUT_SECONDS="${REVIEW_TIMEOUT_SECONDS:-7200}"
 CODEX_RATE_RETRIES="${CODEX_RATE_RETRIES:-6}"
 REVIEW_INFRA_RETRIES="${REVIEW_INFRA_RETRIES:-0}"
-RUN_ID="${RUN_ID:-imo2026-humanize-axle-comparator-$(date -u +%Y%m%dT%H%M%SZ)}"
+RUN_ID="${RUN_ID:-imo2026-axle-comparator-$(date -u +%Y%m%dT%H%M%SZ)}"
 
 DRY_RUN=0
 PREPARE_ONLY=0
@@ -86,11 +86,11 @@ EOF
 }
 
 log() {
-  printf '[imo2026-humanize] %s\n' "$*"
+  printf '[imo2026] %s\n' "$*"
 }
 
 die() {
-  printf '[imo2026-humanize] ERROR: %s\n' "$*" >&2
+  printf '[imo2026] ERROR: %s\n' "$*" >&2
   exit 1
 }
 
@@ -301,7 +301,7 @@ static void install_no_network_filter(void) {
 
 int main(int argc, char **argv) {
   (void)argc;
-  const char *audit = getenv("HUMANIZE_SHELL_AUDIT");
+  const char *audit = getenv("HARNESS_SHELL_AUDIT");
   if (audit != NULL && *audit != '\0') {
     int fd = open(audit, O_WRONLY | O_CREAT | O_APPEND, 0600);
     if (fd >= 0) {
@@ -318,11 +318,11 @@ EOF
   cc -O2 -Wall -Wextra -o "$NO_NET_BASH" "$source"
   mkdir -p "$PROOT_ROOT/worker-shell"
   cc -O2 -Wall -Wextra -shared -fPIC \
-    -o "$PROOT_ROOT/worker-shell/libhumanize-nonet.so" \
-    "$HUMANIZE_ROOT/scripts/nonet-preload.c"
+    -o "$PROOT_ROOT/worker-shell/libnonet.so" \
+    "$HARNESS_ROOT/scripts/nonet-preload.c"
   cc -O2 -Wall -Wextra \
     -o "$PROOT_ROOT/worker-shell/bash" \
-    "$HUMANIZE_ROOT/scripts/nonet-shell.c"
+    "$HARNESS_ROOT/scripts/nonet-shell.c"
   cp /usr/bin/bash "$PROOT_ROOT/worker-shell/bash.real"
   : > "$PROOT_ROOT/worker-shell/invocations.log"
   chmod 0666 "$PROOT_ROOT/worker-shell/invocations.log"
@@ -399,10 +399,10 @@ write_plan_files() {
   local workspace="$1"
   local problem="$2"
   local module="$3"
-  local loop_dir="$workspace/.humanize/rlcr/$LOOP_STAMP"
-  mkdir -p "$workspace/docs/humanize" "$loop_dir"
-  cat > "$workspace/docs/humanize/active-imo2026-plan.md" <<EOF
-# Blind Humanize IMO 2026 Proof: $problem
+  local loop_dir="$workspace/.loop/$LOOP_STAMP"
+  mkdir -p "$workspace/docs/harness" "$loop_dir"
+  cat > "$workspace/docs/harness/active-imo2026-plan.md" <<EOF
+# Blind IMO 2026 Proof: $problem
 
 ## Goal
 
@@ -428,14 +428,14 @@ Solve every theorem hole in the exact IMO 2026 statement snapshot in
 EOF
   if [[ -n "$PROMPT_FILE" ]]; then
     render_plan_template "$PROMPT_FILE" \
-      "$workspace/docs/humanize/user-plan.md" "$problem" "$module"
-    if ! cmp -s "$workspace/docs/humanize/user-plan.md" \
-        "$workspace/docs/humanize/active-imo2026-plan.md"; then
+      "$workspace/docs/harness/user-plan.md" "$problem" "$module"
+    if ! cmp -s "$workspace/docs/harness/user-plan.md" \
+        "$workspace/docs/harness/active-imo2026-plan.md"; then
       {
         printf '\n## User-Supplied Plan\n\n'
-        cat "$workspace/docs/humanize/user-plan.md"
+        cat "$workspace/docs/harness/user-plan.md"
         printf '\n'
-      } >> "$workspace/docs/humanize/active-imo2026-plan.md"
+      } >> "$workspace/docs/harness/active-imo2026-plan.md"
     fi
   fi
   cat > "$loop_dir/goal-tracker.md" <<EOF
@@ -480,11 +480,11 @@ EOF
   cp "$MATH_FLOW_BENCH_ROOT/lakefile.lean" "$workspace/lakefile.lean"
   cp "$MATH_FLOW_BENCH_ROOT/lake-manifest.json" "$workspace/lake-manifest.json"
   cp "$MATH_FLOW_BENCH_ROOT/lean-toolchain" "$workspace/lean-toolchain"
-  cp "$HUMANIZE_ROOT/scripts/validate-imo2026-output.py" \
+  cp "$HARNESS_ROOT/scripts/validate-imo2026-output.py" \
     "$workspace/scripts/validate-imo2026-output.py"
-  cp "$HUMANIZE_ROOT/scripts/verify-imo2026-axle.py" \
+  cp "$HARNESS_ROOT/scripts/verify-imo2026-axle.py" \
     "$workspace/tools/verify-imo2026-axle.py"
-  cp "$HUMANIZE_ROOT/scripts/check-with-comparator.sh" \
+  cp "$HARNESS_ROOT/scripts/check-with-comparator.sh" \
     "$workspace/tools/check-with-comparator.sh"
   chmod +x "$workspace/tools/check-with-comparator.sh"
 
@@ -547,7 +547,7 @@ PY
     comparator.json source scripts tools docs lakefile.lean lake-manifest.json lean-toolchain
   git -C "$workspace" commit -q -m "Initialize sanitized $problem skeleton"
 
-  user="${HUMANIZE_USER_PREFIX}-$(printf '%s' "${problem#imo2026_}" | tr '[:upper:]' '[:lower:]')"
+  user="${HARNESS_USER_PREFIX}-$(printf '%s' "${problem#imo2026_}" | tr '[:upper:]' '[:lower:]')"
   chown "$user:$user" "$workspace" "$CODEX_RUN_HOME/j${index}-${safe}"
   chmod 0700 "$workspace" "$CODEX_RUN_HOME/j${index}-${safe}"
 
@@ -567,13 +567,13 @@ write_worker_prompt() {
   local module="$3"
   local turn="$4"
   local feedback="$5"
-  local loop_dir="$workspace/.humanize/rlcr/$LOOP_STAMP"
+  local loop_dir="$workspace/.loop/$LOOP_STAMP"
   local prompt="$loop_dir/round-${turn}-prompt.md"
   if [[ -z "$feedback" && "$turn" -eq 1 && -s "$loop_dir/seed-review.md" ]]; then
     feedback="$loop_dir/seed-review.md"
   fi
   cat > "$prompt" <<EOF
-You are the blind Lean proof worker in Humanize round $turn of at most $MAX_TURNS.
+You are the blind Lean proof worker in review round $turn of at most $MAX_TURNS.
 
 Problem: $problem
 Only editable proof file: \`MathFlowBench/$module.lean\`
@@ -627,10 +627,10 @@ Comparator gate (mandatory before handing the proof to the reviewer):
 Do not run a full \`lake build\`; compile only the target file. Leave the best
 useful candidate in place even if this round is incomplete.
 EOF
-  if [[ -s "$workspace/docs/humanize/user-plan.md" ]]; then
+  if [[ -s "$workspace/docs/harness/user-plan.md" ]]; then
     {
       printf '\n## User-Supplied Plan\n\n'
-      cat "$workspace/docs/humanize/user-plan.md"
+      cat "$workspace/docs/harness/user-plan.md"
       printf '\n'
     } >> "$prompt"
   fi
@@ -708,7 +708,7 @@ write_summary() {
   local check_code="$5"
   local check_log="$6"
   local worker_final="$7"
-  local summary="$workspace/.humanize/rlcr/$LOOP_STAMP/round-${turn}-summary.md"
+  local summary="$workspace/.loop/$LOOP_STAMP/round-${turn}-summary.md"
   cat > "$summary" <<EOF
 # Round $turn Worker Summary
 
@@ -735,8 +735,8 @@ render_review_prompt() {
   local problem="$2"
   local module="$3"
   local turn="$4"
-  local template="$HUMANIZE_ROOT/regular-review.md"
-  local loop_dir="$workspace/.humanize/rlcr/$LOOP_STAMP"
+  local template="$HARNESS_ROOT/regular-review.md"
+  local loop_dir="$workspace/.loop/$LOOP_STAMP"
   local output="$loop_dir/round-${turn}-review-prompt.md"
   TEMPLATE="$template" WORKSPACE="$workspace" PROOT_ROOT="$PROOT_ROOT" PROBLEM="$problem" MODULE="$module" \
     TURN="$turn" LOOP_STAMP="$LOOP_STAMP" OUTPUT="$output" python3 - <<'PY'
@@ -751,8 +751,8 @@ problem = os.environ["PROBLEM"]
 module = os.environ["MODULE"]
 turn = int(os.environ["TURN"])
 stamp = os.environ["LOOP_STAMP"]
-loop_host = workspace / ".humanize" / "rlcr" / stamp
-loop_chroot = guest_workspace / ".humanize" / "rlcr" / stamp
+loop_host = workspace / ".loop" / stamp
+loop_chroot = guest_workspace / ".loop" / stamp
 summary = (loop_host / f"round-{turn}-summary.md").read_text()
 try:
     history = subprocess.run(
@@ -764,7 +764,7 @@ except Exception:
 
 values = {
     "CURRENT_ROUND": str(turn),
-    "PLAN_FILE": str(guest_workspace / "docs/humanize/active-imo2026-plan.md"),
+    "PLAN_FILE": str(guest_workspace / "docs/harness/active-imo2026-plan.md"),
     "PROMPT_FILE": str(loop_chroot / f"round-{turn}-prompt.md"),
     "SUMMARY_CONTENT": summary,
     "GOAL_TRACKER_FILE": str(loop_chroot / "goal-tracker.md"),
@@ -790,7 +790,7 @@ text = text.replace("<candidate-file>", f"MathFlowBench/{module}.lean")
 text = text.replace("PROBLEM_ID", problem)
 prefix = f"""# Isolated Blind IMO 2026 Reviewer\n\n
 You are reviewing `{problem}` in a sanitized filesystem. References to Claude
-in the inherited Humanize template mean the blind Codex proof worker.
+in the inherited harness template mean the blind Codex proof worker.
 
 - Use model gpt-5.6-sol with max reasoning effort.
 - Do not inspect Codex sessions, prior experiments, other worktrees, or existing solutions.
@@ -893,14 +893,14 @@ run_codex_namespace_once() {
   local -a proot_args
   : "$nsroot" "$module"
   network_mode="disabled"
-  user="${HUMANIZE_USER_PREFIX}-$(printf '%s' "${module#IMO2026}" | tr '[:upper:]' '[:lower:]')"
+  user="${HARNESS_USER_PREFIX}-$(printf '%s' "${module#IMO2026}" | tr '[:upper:]' '[:lower:]')"
   guest_workspace="${workspace#"$PROOT_ROOT"}"
   guest_codex_home="${codex_home#"$PROOT_ROOT"}"
   if [[ "$role" == reviewer ]]; then
     network_mode="enabled"
   fi
   chown -R "$user:$user" \
-    "$workspace/.humanize" "$workspace/.lake/build" "$workspace/home" "$codex_home"
+    "$workspace/.loop" "$workspace/.lake/build" "$workspace/home" "$codex_home"
   chown "$user:$user" "$workspace/.lake"
   if [[ "$role" == worker ]]; then
     chown -R "$user:$user" "$workspace/MathFlowBench"
@@ -927,9 +927,9 @@ run_codex_namespace_once() {
         HOME="$guest_workspace/home" USER="$user" CODEX_HOME="$guest_codex_home" \
         ELAN_HOME=/root/.elan PATH=/root/.elan/bin:/usr/local/bin:/usr/bin:/bin \
         SHELL=/bin/bash TMPDIR="$guest_codex_home/tmp" TERM=dumb \
-        HUMANIZE_SHELL_AUDIT=/worker-shell/invocations.log \
-        HUMANIZE_NONET_LIB=/worker-shell/libhumanize-nonet.so \
-        HUMANIZE_REAL_BASH=/worker-shell/bash.real \
+        HARNESS_SHELL_AUDIT=/worker-shell/invocations.log \
+        HARNESS_NONET_LIB=/worker-shell/libnonet.so \
+        HARNESS_REAL_BASH=/worker-shell/bash.real \
         COMPARATOR_BIN=/comparator-tools/comparator \
         LEAN4EXPORT_BIN=/checker-tools/lean4export \
         LANDRUN_BIN=/comparator-tools/landrun \
@@ -1018,7 +1018,7 @@ commit_candidate_round() {
 
 review_is_complete() {
   local workspace="$1" turn="$2"
-  local loop_dir="$workspace/.humanize/rlcr/$LOOP_STAMP"
+  local loop_dir="$workspace/.loop/$LOOP_STAMP"
   local result="$loop_dir/round-${turn}-review-result.md"
   local axle="$result.axle.json"
   [[ -s "$result" ]] || return 1
@@ -1029,7 +1029,7 @@ review_is_complete() {
 
 axle_infrastructure_failed() {
   local workspace="$1" turn="$2"
-  local result="$workspace/.humanize/rlcr/$LOOP_STAMP/round-${turn}-review-result.md"
+  local result="$workspace/.loop/$LOOP_STAMP/round-${turn}-review-result.md"
   local axle="$result.axle.json"
   [[ -f "$axle" ]] || return 0
   jq -e 'any(.results[]?; .status == "api_error")' "$axle" >/dev/null 2>&1
@@ -1046,7 +1046,7 @@ run_job() {
   job_dir="$RUN_ROOT/jobs/j${index}-${safe}"
   worker_home="$CODEX_RUN_HOME/j${index}-${safe}/worker"
   reviewer_home="$CODEX_RUN_HOME/j${index}-${safe}/reviewer"
-  loop_dir="$workspace/.humanize/rlcr/$LOOP_STAMP"
+  loop_dir="$workspace/.loop/$LOOP_STAMP"
 
   if [[ "$(cat "$job_dir/status.txt" 2>/dev/null || true)" == passed ]]; then
     return 0
@@ -1062,8 +1062,8 @@ run_job() {
   while [[ "$turn" -le "$end_turn" && "$turn" -le "$MAX_TURNS" ]]; do
     printf 'worker_turn_%s\n' "$turn" > "$job_dir/status.txt"
     write_worker_prompt "$workspace" "$problem" "$module" "$turn" "$feedback"
-    worker_prompt_rel=".humanize/rlcr/$LOOP_STAMP/round-${turn}-prompt.md"
-    worker_final_rel=".humanize/rlcr/$LOOP_STAMP/round-${turn}-worker-final.md"
+    worker_prompt_rel=".loop/$LOOP_STAMP/round-${turn}-prompt.md"
+    worker_final_rel=".loop/$LOOP_STAMP/round-${turn}-worker-final.md"
     code=0
     run_codex_with_retries worker "$workspace" "$worker_home" "$worker_prompt_rel" \
       "$worker_final_rel" "$job_dir" "$problem" "$module" "$turn" \
@@ -1099,8 +1099,8 @@ run_job() {
 
     printf 'review_turn_%s\n' "$turn" > "$job_dir/status.txt"
     render_review_prompt "$workspace" "$problem" "$module" "$turn"
-    review_prompt_rel=".humanize/rlcr/$LOOP_STAMP/round-${turn}-review-prompt.md"
-    review_final_rel=".humanize/rlcr/$LOOP_STAMP/round-${turn}-reviewer-final.md"
+    review_prompt_rel=".loop/$LOOP_STAMP/round-${turn}-review-prompt.md"
+    review_final_rel=".loop/$LOOP_STAMP/round-${turn}-reviewer-final.md"
     review_result="$loop_dir/round-${turn}-review-result.md"
     review_try=1
     while [[ "$REVIEW_INFRA_RETRIES" -eq 0 || "$review_try" -le "$REVIEW_INFRA_RETRIES" ]]; do
@@ -1201,7 +1201,7 @@ resume_review_job() {
   index="${index#j}"
   workspace="$WORKSPACES_ROOT/$job_name"
   reviewer_home="$CODEX_RUN_HOME/$job_name/reviewer"
-  loop_dir="$workspace/.humanize/rlcr/$LOOP_STAMP"
+  loop_dir="$workspace/.loop/$LOOP_STAMP"
   current_status="$(head -1 "$job_dir/status.txt" 2>/dev/null || true)"
   case "$current_status" in
     review_infrastructure_failed|reviewer_timeout|reviewer_transport_failed|reviewer_rate_limited)
@@ -1210,8 +1210,8 @@ resume_review_job() {
   esac
 
   turn="$(cat "$job_dir/next-turn.txt")"
-  review_prompt_rel=".humanize/rlcr/$LOOP_STAMP/round-${turn}-review-prompt.md"
-  review_final_rel=".humanize/rlcr/$LOOP_STAMP/round-${turn}-reviewer-final.md"
+  review_prompt_rel=".loop/$LOOP_STAMP/round-${turn}-review-prompt.md"
+  review_final_rel=".loop/$LOOP_STAMP/round-${turn}-reviewer-final.md"
   review_result="$loop_dir/round-${turn}-review-result.md"
   [[ -s "$workspace/$review_prompt_rel" ]] || \
     die "review recovery prompt missing for $problem turn $turn"
@@ -1316,7 +1316,7 @@ write_run_manifest() {
     prompt_sha="n/a"
   fi
   cat > "$RUN_ROOT/RUN.md" <<EOF
-# IMO 2026 Humanize + Comparator + AXLE Run
+# IMO 2026 Comparator + AXLE Run
 
 - Run ID: \`$RUN_ID\`
 - Failure source: \`$failure_label\`
@@ -1366,14 +1366,14 @@ main() {
   fi
   [[ -f "$BASE_CODEX_HOME/auth.json" ]] || die "Codex auth missing: $BASE_CODEX_HOME/auth.json"
   [[ -f "$BASE_CODEX_HOME/config.toml" ]] || die "Codex config missing: $BASE_CODEX_HOME/config.toml"
-  [[ -f "$HUMANIZE_ROOT/regular-review.md" ]] || die "review template missing"
+  [[ -f "$HARNESS_ROOT/regular-review.md" ]] || die "review template missing"
   [[ -x "$COMPARATOR_BIN" ]] || die "Comparator binary missing or not executable: $COMPARATOR_BIN"
   [[ -x "$LEAN4EXPORT_BIN" ]] || die "lean4export binary missing or not executable: $LEAN4EXPORT_BIN"
   [[ -x "$LANDRUN_BIN" ]] || die "Landrun binary missing or not executable: $LANDRUN_BIN"
-  [[ -f "$HUMANIZE_ROOT/scripts/check-with-comparator.sh" ]] || \
+  [[ -f "$HARNESS_ROOT/scripts/check-with-comparator.sh" ]] || \
     die "Comparator wrapper missing"
-  [[ -f "$HUMANIZE_ROOT/scripts/validate-imo2026-output.py" ]] || die "statement validator missing"
-  [[ -f "$HUMANIZE_ROOT/scripts/verify-imo2026-axle.py" ]] || die "AXLE verifier missing"
+  [[ -f "$HARNESS_ROOT/scripts/validate-imo2026-output.py" ]] || die "statement validator missing"
+  [[ -f "$HARNESS_ROOT/scripts/verify-imo2026-axle.py" ]] || die "AXLE verifier missing"
   [[ -x "$CODEX_BIN" ]] || die "Codex binary missing or not executable: $CODEX_BIN"
   [[ -d "$LOCAL_RUNTIME_TEMPLATE" ]] || die "local runtime template missing: $LOCAL_RUNTIME_TEMPLATE"
   [[ -d /mathlib-packages ]] || die "/mathlib-packages is not linked to the pinned package cache"
@@ -1392,7 +1392,7 @@ main() {
       printf 'missing nonempty upstream problem source: %s\n' "$problem" >&2
       missing=$((missing + 1))
     fi
-    user="${HUMANIZE_USER_PREFIX}-${problem#imo2026_}"
+    user="${HARNESS_USER_PREFIX}-${problem#imo2026_}"
     getent passwd "$user" >/dev/null || die "missing isolated worker account: $user"
   done
   [[ "$missing" -eq 0 ]] || die "$missing selected IMO2026 problems are unavailable"
@@ -1412,8 +1412,8 @@ main() {
       die "cannot recover worker in missing run: $RUN_ROOT"
     activate_identity_paths
     existing_stamp="$(find "$WORKSPACES_ROOT" -mindepth 4 -maxdepth 4 \
-      -type d -path '*/.humanize/rlcr/*' -printf '%f\n' | sort -u | head -n 1)"
-    [[ -n "$existing_stamp" ]] || die "cannot locate existing Humanize loop stamp"
+      -type d -path '*/.loop/*' -printf '%f\n' | sort -u | head -n 1)"
+    [[ -n "$existing_stamp" ]] || die "cannot locate existing loop stamp"
     LOOP_STAMP="$existing_stamp"
     log "worker-only recovery for $RUN_ID using loop $LOOP_STAMP"
     resume_worker_job "${selected[0]}"
@@ -1427,8 +1427,8 @@ main() {
       die "cannot recover review in missing run: $RUN_ROOT"
     activate_identity_paths
     existing_stamp="$(find "$WORKSPACES_ROOT" -mindepth 4 -maxdepth 4 \
-      -type d -path '*/.humanize/rlcr/*' -printf '%f\n' | sort -u | head -n 1)"
-    [[ -n "$existing_stamp" ]] || die "cannot locate existing Humanize loop stamp"
+      -type d -path '*/.loop/*' -printf '%f\n' | sort -u | head -n 1)"
+    [[ -n "$existing_stamp" ]] || die "cannot locate existing loop stamp"
     LOOP_STAMP="$existing_stamp"
     log "review-only recovery for $RUN_ID using loop $LOOP_STAMP"
     resume_review_job "${selected[0]}"
@@ -1442,8 +1442,8 @@ main() {
       die "cannot resume missing run: $RUN_ROOT"
     activate_identity_paths
     existing_stamp="$(find "$WORKSPACES_ROOT" -mindepth 4 -maxdepth 4 \
-      -type d -path '*/.humanize/rlcr/*' -printf '%f\n' | sort -u | head -n 1)"
-    [[ -n "$existing_stamp" ]] || die "cannot locate existing Humanize loop stamp"
+      -type d -path '*/.loop/*' -printf '%f\n' | sort -u | head -n 1)"
+    [[ -n "$existing_stamp" ]] || die "cannot locate existing loop stamp"
     LOOP_STAMP="$existing_stamp"
     log "resume-prepared for run $RUN_ID using loop $LOOP_STAMP"
     active=0

@@ -7,9 +7,9 @@
 
 int main(int argc, char **argv) {
   (void)argc;
-  const char *library = getenv("HUMANIZE_NONET_LIB");
-  const char *real_bash = getenv("HUMANIZE_REAL_BASH");
-  const char *audit = getenv("HUMANIZE_SHELL_AUDIT");
+  const char *library = getenv("HARNESS_NONET_LIB");
+  const char *real_bash = getenv("HARNESS_REAL_BASH");
+  const char *audit = getenv("HARNESS_SHELL_AUDIT");
   if (library == NULL || real_bash == NULL) return 126;
   if (audit != NULL && *audit != '\0') {
     int fd = open(audit, O_WRONLY | O_CREAT | O_APPEND, 0600);

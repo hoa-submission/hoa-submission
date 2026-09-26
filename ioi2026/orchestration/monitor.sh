@@ -36,7 +36,7 @@ for task in sys.argv[2:]:
             alive = True
         except OSError:
             pass
-    loops = sorted((worker / ".humanize" / "rlcr").glob("*"))
+    loops = sorted((worker / ".loop").glob("*"))
     current_round = "-"
     complete = False
     if loops:
