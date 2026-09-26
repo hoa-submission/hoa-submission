@@ -15,7 +15,6 @@ agentic, YOLO-style approach.
 | Verified proofs | **672** |
 | Unresolved | 0 |
 | Pass rate | **100%** |
-| Ranking | Joint #1 on the [official leaderboard](https://trishullab.github.io/PutnamBench/leaderboard.html) |
 | Verified? | Yes, all passed Lean 4 |
 | Worker / reviewer model | `gpt-5.6-sol`, reasoning effort `xhigh` |
 | Lean | `leanprover/lean4:v4.27.0`, Mathlib `a3a10db0` |
